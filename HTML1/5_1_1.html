@@ -13,34 +13,18 @@
         <style>
             /* 필요하다명 style 태그로 body 내 최상단 */
         </style>
-        <div>
+        <div id="top">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png"/>
-            <br/>
-            검색창 <input type="search" value="검색"/><br/>
-            텍스트 <input type="text" value="텍스트" /><br/>
-            숫자 <input type="number" value="123" /><br/>
-            비밀번호 <input type="password" /><br/>
-            전화번호 <input type="tel" /><br/>
-            버튼1 <input type="button" value="버튼1"/><br/>
-            버튼2 <input type="submit" value="버튼2"/><br/>
-            <button>좋은버튼</button><br/>
-            파일첨부 (이미지)<input type="file" accept="image/*"><br/>
-            파일첨부 (이미지)<input type="file" accept=".jpg .png .pdf .insu"><br/>
-            파일첨부 (오디오)<input type="file" accept="audio/*"><br/>
-            파일첨부 (비디오)<input type="file" accept="video/*"><br/>
-            색깔 <input type="color" value="#ff0000"
-        </div>
-        <h2>tiranoinpop</h2>
-        <button>프로필편집</button>
-        <p>
-        <div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png"/>
+            <input type="search" value="검색"/>
+            <div></div>
         </div>
         
         <div id="profile">
-            <img src="image/profile2.jpg" width="50px"/><br/>
-            <div>
-                <h2>tiranoinpop</h2>
+            <div id="profile_pic">
+                <img class="circle_pic" src="./image/profile2.jpg"/>
+            </div>
+            <div id="profile_info">
+                <div id="id">tiranoinpop</div>
                 <button>프로필편집</button>    
             </div>
         </div>
@@ -53,55 +37,69 @@
                 프로그래머
             </p>
             <p>
-                <a href="https://github.com/tiranoinpop/instagram">github.com/tiranoinpop/instagram</a>
+                <a href="https://github.com/tiranoinpop/instagram">
+                    github.com/tiranoinpop/instagram
+                </a>
             </p>
-            
         </div>
-        <div>
-            <div class="hightlight">
-                <div>
-                    <img src="./image/istockphoto-1325997570-612x612.jpg" height="35px">    
+
+        <div id="highlight_area">
+            <div class="highlight">
+                <div class="highlight_pic">
+                    <img src="./image/istockphoto-1325997570-612x612.jpg" class="circle_pic">    
                 </div>
                 <div>
                     ❤️
                 </div>
             </div>
-            <div class="hightlight">
-                <div>
-                    <img src="./image/istockphoto-1443562748-612x612.jpg" height="35px">    
+            <div class="highlight">
+                <div class="highlight_pic">
+                    <img src="./image/istockphoto-1443562748-612x612.jpg" class="circle_pic">    
                 </div>
                 <div>
                     😊
                 </div>
             </div>
+            <div></div>
         </div>
-        <div>
-            <p>
-                <div>
-                    게시물<br/>
-                    133
-                </div>
-                <div>
-                    팔로워<br/>
-                    408
-                </div>
-                <div>
-                    팔로우<br/>
-                    408
-                </div>
-            </p>
+
+
+
+        <div id="stat_bar">
+            <div class="stat">
+                게시물<br />
+                133
+            </div>
+            <div class="stat">
+                팔로워<br />
+                408
+            </div>
+            <div class="stat">
+                팔로우<br />
+                408
+            </div>
         </div>
         <div>아이콘이 들어갈 자리</div>
+
+        <div class="thumbnail_grid">
+            <img src="image/thumbnails/2025_09_22_22_31_51.jpg"  class="thumbnail"/>
+            <img src="image/thumbnails/2025_09_23_00_17_30.jpg"  class="thumbnail"/>
+            <img src="image/thumbnails/2025_09_23_21_58_48.jpg"  class="thumbnail"/>
+        </div>
+
+        <div class="thumbnail_grid">
+            <img src="image/thumbnails/2025_09_27_12_34_33.jpg"  class="thumbnail"/>
+            <img src="image/thumbnails/2025_09_28_01_31_12.jpg" class="thumbnail"/>
+            <img src="image/thumbnails/2025_09_28_10_06_58.jpg"  class="thumbnail"/>
+        </div>
+
+        <div class="thumbnail_grid">
+            <img src="image/thumbnails/2025_09_3_23_15_59.jpg"  class="thumbnail"/>
+            <img src="image/thumbnails/2025_09_3_23_30_40.jpg" class="thumbnail"/>
+            <img src="image/thumbnails/2025_10_10_13_38_37.jpg"  class="thumbnail"/>
+        </div>
         <div>
-            <img src="image/thumbnails/2025_09_22_22_31_51.jpg" width="32%" />
-            <img src="image/thumbnails/2025_09_23_00_17_30.jpg" width="32%" />
-            <img src="image/thumbnails/2025_09_23_21_58_48.jpg" width="32%" />
-            <img src="image/thumbnails/2025_09_27_12_34_33.jpg" width="32%" />
-            <img src="image/thumbnails/2025_09_28_01_31_12.jpg" width="32%" />
-            <img src="image/thumbnails/2025_09_28_10_06_58.jpg" width="32%" />
-            <img src="image/thumbnails/2025_09_3_23_15_59.jpg" width="32%" />
-            <img src="image/thumbnails/2025_09_3_23_30_40.jpg" width="32%" />
-            <img src="image/thumbnails/2025_10_10_13_38_37.jpg" width="32%" />
+
         </div>
     </body>
 </html>
