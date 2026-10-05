@@ -198,50 +198,185 @@
 
         <h3>6-2. 선택 / 범위 / 날짜 (6_1_16.html)</h3>
         <div class="result">
-            <p>
-                <input type="radio" name="food" checked/>한식
-                <input type="radio" name="food"/>중식
-                <input type="radio" name="food"/>일식
-                <input type="radio" name="food"/>양식
-            </p>
-            <p>
-                <input type="range" min="0" max="1000" step="10" value="10"/>
-            </p>
-            <p>
-                <input type="date"/>
-                <input type="month"/>
-                <input type="week"/>
-                <input type="time"/>
-                <input type="datetime-local"/>
-            </p>
+            <table>
+                <tr><th>type</th><th>코드</th><th>결과</th></tr>
+                <tr>
+                    <td>radio<br/>(같은 name = 한 그룹)</td>
+                    <td><pre><code>&lt;input type="radio" name="radio1" checked/&gt;한식
+&lt;input type="radio" name="radio1" /&gt;중식
+&lt;input type="radio" name="radio1" /&gt;일식
+&lt;input type="radio" name="radio1" /&gt;양식</code></pre></td>
+                    <td>
+                        <input type="radio" name="radio1" checked/>한식
+                        <input type="radio" name="radio1" />중식
+                        <input type="radio" name="radio1" />일식
+                        <input type="radio" name="radio1" />양식
+                    </td>
+                </tr>
+                <tr>
+                    <td>radio<br/>(다른 name = 다른 그룹)</td>
+                    <td><pre><code>&lt;input type="radio" name="radio2" /&gt;뜨거운것
+&lt;input type="radio" name="radio2" /&gt;차가운것</code></pre></td>
+                    <td>
+                        <input type="radio" name="radio2" />뜨거운것
+                        <input type="radio" name="radio2" />차가운것
+                    </td>
+                </tr>
+                <tr>
+                    <td>range</td>
+                    <td><pre><code>&lt;input type="range" min="0" max="1000"/&gt;</code></pre></td>
+                    <td><input type="range" min="0" max="1000"/></td>
+                </tr>
+                <tr>
+                    <td>range<br/>(step, value)</td>
+                    <td><pre><code>&lt;input type="range" min="0" max="1000" step="10" value="10"/&gt;</code></pre></td>
+                    <td><input type="range" min="0" max="1000" step="10" value="10"/></td>
+                </tr>
+                <tr><td>date</td><td><code>&lt;input type="date"/&gt;</code></td><td><input type="date"/></td></tr>
+                <tr><td>month</td><td><code>&lt;input type="month"/&gt;</code></td><td><input type="month"/></td></tr>
+                <tr><td>week</td><td><code>&lt;input type="week"/&gt;</code></td><td><input type="week"/></td></tr>
+                <tr><td>time</td><td><code>&lt;input type="time"/&gt;</code></td><td><input type="time"/></td></tr>
+                <tr><td>datetime-local</td><td><code>&lt;input type="datetime-local"/&gt;</code></td><td><input type="datetime-local"/></td></tr>
+            </table>
+        </div>
+        <p class="tip">
+            <code>name</code>이 같으면 한 그룹으로 인식해서 <strong>그룹 안에서 반드시 하나만</strong> 선택된다.<br/>
+            <code>checked</code> = 처음부터 선택된 상태.<br/>
+            <code>range</code> : <code>min</code>(최솟값) <code>max</code>(최댓값) <code>step</code>(움직이는 간격) <code>value</code>(시작값)
+        </p>
+
+        <!-- ============================================================ -->
+        <h2>7. 다음에 배울 태그</h2>
+        <p>아직 안 배운 태그들이다. 지금은 인스타 클론(5_1_1.html)을 전부 <code>&lt;div&gt;</code>로 만들었는데, 아래 태그들로 바꿔 나갈 예정이다.</p>
+
+        <h3>7-1. 시맨틱 태그 : div 대신 의미 있는 이름의 영역</h3>
+        <div class="result">
+            <table>
+                <tr><th>구분</th><th>코드</th><th>설명</th></tr>
+                <tr>
+                    <td>지금까지<br/>(div)</td>
+                    <td><pre><code>&lt;div id="top"&gt;...&lt;/div&gt;
+&lt;div id="profile"&gt;...&lt;/div&gt;
+&lt;div class="thumbnail_grid"&gt;...&lt;/div&gt;</code></pre></td>
+                    <td>어떤 영역인지 id 이름으로만 구분</td>
+                </tr>
+                <tr>
+                    <td>앞으로<br/>(시맨틱)</td>
+                    <td><pre><code>&lt;header&gt;상단바&lt;/header&gt;
+&lt;nav&gt;메뉴 링크 모음&lt;/nav&gt;
+&lt;main&gt;
+    &lt;section&gt;프로필&lt;/section&gt;
+    &lt;section&gt;게시물 썸네일&lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;하단 정보&lt;/footer&gt;</code></pre></td>
+                    <td>태그 이름만 봐도 역할을 알 수 있다. 검색엔진, 화면낭독기가 구조를 이해한다.</td>
+                </tr>
+            </table>
         </div>
         <table>
-            <tr><th>type / 속성</th><th>설명</th></tr>
-            <tr><td><code>radio</code></td><td>여러 개 중 하나만 선택. <strong>name이 같으면 한 그룹</strong></td></tr>
-            <tr><td><code>checked</code></td><td>처음부터 선택된 상태</td></tr>
-            <tr><td><code>range</code></td><td>슬라이더. <code>min</code>, <code>max</code>, <code>step</code>(간격), <code>value</code>(시작값)</td></tr>
-            <tr><td><code>date</code> / <code>month</code> / <code>week</code> / <code>time</code> / <code>datetime-local</code></td><td>날짜, 월, 주, 시간, 날짜+시간 선택</td></tr>
+            <tr><th>태그</th><th>의미</th></tr>
+            <tr><td><code>&lt;header&gt;</code></td><td>머리말 영역 (로고, 검색창 등)</td></tr>
+            <tr><td><code>&lt;nav&gt;</code></td><td>메뉴 / 이동 링크 모음</td></tr>
+            <tr><td><code>&lt;main&gt;</code></td><td>페이지의 핵심 내용 (페이지당 하나)</td></tr>
+            <tr><td><code>&lt;section&gt;</code></td><td>주제별 구역</td></tr>
+            <tr><td><code>&lt;footer&gt;</code></td><td>꼬리말 영역</td></tr>
         </table>
 
-        <!-- ============================================================ -->
-        <h2>7. 자주 했던 실수 체크리스트</h2>
+        <h3>7-2. 목록 : ul, ol, li</h3>
+        <div class="result">
+            <table>
+                <tr><th>태그</th><th>코드</th><th>결과</th></tr>
+                <tr>
+                    <td>ul<br/>(순서 없음)</td>
+                    <td><pre><code>&lt;ul&gt;
+    &lt;li&gt;HTML&lt;/li&gt;
+    &lt;li&gt;CSS&lt;/li&gt;
+    &lt;li&gt;JavaScript&lt;/li&gt;
+&lt;/ul&gt;</code></pre></td>
+                    <td><ul><li>HTML</li><li>CSS</li><li>JavaScript</li></ul></td>
+                </tr>
+                <tr>
+                    <td>ol<br/>(순서 있음)</td>
+                    <td><pre><code>&lt;ol&gt;
+    &lt;li&gt;HTML&lt;/li&gt;
+    &lt;li&gt;CSS&lt;/li&gt;
+    &lt;li&gt;JavaScript&lt;/li&gt;
+&lt;/ol&gt;</code></pre></td>
+                    <td><ol><li>HTML</li><li>CSS</li><li>JavaScript</li></ol></td>
+                </tr>
+            </table>
+        </div>
+        <p class="tip"><code>ul</code>(unordered list) / <code>ol</code>(ordered list) 안에는 <code>li</code>(list item)만 넣는다.</p>
+
+        <h3>7-3. 표 : table, tr, th, td</h3>
+        <div class="result">
+            <table>
+                <tr><th>코드</th><th>결과</th></tr>
+                <tr>
+                    <td><pre><code>&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th&gt;이름&lt;/th&gt;
+        &lt;th&gt;팔로워&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;tiranoinpop&lt;/td&gt;
+        &lt;td&gt;408&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;</code></pre></td>
+                    <td>
+                        <table>
+                            <tr><th>이름</th><th>팔로워</th></tr>
+                            <tr><td>tiranoinpop</td><td>408</td></tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
         <table>
-            <tr><th>잘못된 코드</th><th>올바른 코드</th></tr>
-            <tr><td>head에 <code>meta charset</code>, <code>title</code> 없음</td><td><code>&lt;meta charset="UTF-8"&gt;</code>, <code>&lt;title&gt;</code> 항상 작성</td></tr>
-            <tr><td>body 안에 <code>&lt;style&gt;</code></td><td>head 안에 <code>&lt;style&gt;</code></td></tr>
-            <tr><td><code>&lt;img src="..."&gt;</code></td><td><code>&lt;img src="..." alt="설명"&gt;</code></td></tr>
-            <tr><td><code>height=100px/&gt;</code></td><td><code>height="100" /&gt;</code> (속성값은 따옴표, 숫자만)</td></tr>
-            <tr><td><code>accept=".jpg .png"</code></td><td><code>accept=".jpg,.png"</code></td></tr>
+            <tr><th>태그</th><th>의미</th></tr>
+            <tr><td><code>&lt;table&gt;</code></td><td>표 전체</td></tr>
+            <tr><td><code>&lt;tr&gt;</code></td><td>행 (table row)</td></tr>
+            <tr><td><code>&lt;th&gt;</code></td><td>제목 칸 (table header, 굵게 / 가운데)</td></tr>
+            <tr><td><code>&lt;td&gt;</code></td><td>내용 칸 (table data)</td></tr>
         </table>
+        <p class="tip">이 노트의 표들이 전부 table 태그로 만든 것이다. 소스 보기(Ctrl+U)로 확인해 볼 것.</p>
 
-        <!-- ============================================================ -->
-        <h2>8. 다음에 배울 태그</h2>
-        <ul>
-            <li><strong>시맨틱 태그</strong> : <code>&lt;header&gt;</code> <code>&lt;nav&gt;</code> <code>&lt;main&gt;</code> <code>&lt;section&gt;</code> <code>&lt;footer&gt;</code> - div 대신 의미 있는 이름의 영역</li>
-            <li><strong>목록</strong> : <code>&lt;ul&gt;</code> <code>&lt;ol&gt;</code> <code>&lt;li&gt;</code> (이 목록이 바로 ul + li)</li>
-            <li><strong>표</strong> : <code>&lt;table&gt;</code> <code>&lt;tr&gt;</code> <code>&lt;th&gt;</code> <code>&lt;td&gt;</code> (이 페이지의 표들)</li>
-            <li><strong>폼</strong> : <code>&lt;form&gt;</code> <code>&lt;label&gt;</code> - input들을 묶어서 서버로 보내기</li>
-        </ul>
+        <h3>7-4. 폼 : form, label</h3>
+        <div class="result">
+            <table>
+                <tr><th>코드</th><th>결과</th></tr>
+                <tr>
+                    <td><pre><code>&lt;form action="#" method="get"&gt;
+    &lt;label for="uid"&gt;아이디&lt;/label&gt;
+    &lt;input type="text" id="uid" name="uid"/&gt;
+    &lt;br/&gt;
+    &lt;label for="pw"&gt;비밀번호&lt;/label&gt;
+    &lt;input type="password" id="pw" name="pw"/&gt;
+    &lt;br/&gt;
+    &lt;input type="submit" value="로그인"/&gt;
+&lt;/form&gt;</code></pre></td>
+                    <td>
+                        <form action="#" method="get">
+                            <label for="uid">아이디</label>
+                            <input type="text" id="uid" name="uid"/>
+                            <br/>
+                            <label for="pw">비밀번호</label>
+                            <input type="password" id="pw" name="pw"/>
+                            <br/>
+                            <input type="submit" value="로그인"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table>
+            <tr><th>태그 / 속성</th><th>의미</th></tr>
+            <tr><td><code>&lt;form&gt;</code></td><td>input들을 묶어서 한 번에 서버로 보낸다</td></tr>
+            <tr><td><code>action</code></td><td>데이터를 보낼 주소 (지금은 <code>#</code> = 현재 페이지)</td></tr>
+            <tr><td><code>method</code></td><td>보내는 방식 (<code>get</code> / <code>post</code>)</td></tr>
+            <tr><td><code>&lt;label for="id"&gt;</code></td><td>입력창의 이름표. 글자를 클릭해도 <code>id</code>가 같은 input에 커서가 간다</td></tr>
+            <tr><td><code>name</code></td><td>서버로 보낼 때 사용하는 데이터 이름 (6번에서 본 "서버로 전달된다"의 그 데이터)</td></tr>
+        </table>
 
         <p>
             👉 종합 실습 결과물 : <a href="./5_1_1.html">인스타그램 프로필 클론 (5_1_1.html)</a>
