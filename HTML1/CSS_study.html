@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<!-- CSS 공부 노트 : 지금까지 배운 CSS 정리 (예제 파일 7_3_1 ~ 9_1_8, css/style.css) -->
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CSS 공부 노트</title>
+        <link href="./css/CSS_study.css" rel="stylesheet">
+    </head>
+    <body>
+        <p><a href="./index.html">← 대문으로</a> | <a href="./HTML_study.html">← HTML 공부 노트</a></p>
+        <h1>CSS 공부 노트</h1>
+        <p>
+            HTML이 <strong>정보와 구조</strong>라면, CSS는 그것의 <strong>모양(디자인)</strong>을 정하는 언어다.<br/>
+            이 페이지의 "실행 결과"는 예제 코드를 그대로 적용해서 보여준다.
+        </p>
+
+        <!-- ============================================================ -->
+        <h2>1. CSS 기본 문법</h2>
+        <pre><code>선택자 {
+    속성: 값;
+    속성: 값;
+}
+
+h2 {
+    color: black;       /* 주석은 이렇게 */
+}</code></pre>
+        <table>
+            <tr><th>용어</th><th>의미</th></tr>
+            <tr><td>선택자 (selector)</td><td>"어떤 요소에" 적용할지 (<code>h2</code>, <code>.highlight</code>, <code>#profile</code> ...)</td></tr>
+            <tr><td>속성 (property)</td><td>"무엇을" 바꿀지 (<code>color</code>, <code>font-size</code> ...)</td></tr>
+            <tr><td>값 (value)</td><td>"어떻게" 바꿀지 (<code>black</code>, <code>30px</code> ...). 속성 뒤에 <code>:</code>, 값 끝에 <code>;</code></td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>2. HTML에 CSS 연결하는 3가지 방법 (5_1_1, 7_4_2)</h2>
+        <pre><code>&lt;!-- 1. 외부 파일 : head 안에서 link 태그 (rel = relation, 관계가 뭔지 표시) --&gt;
+&lt;link href="./css/style.css" rel="stylesheet"&gt;
+
+&lt;!-- 2. style 태그 : 문서 안에 직접 (head 안에 작성) --&gt;
+&lt;style&gt;
+    p { color: blue; }
+&lt;/style&gt;
+
+&lt;!-- 3. 인라인 : 태그에 style 속성 --&gt;
+&lt;p style="color:red;"&gt;어떤결과가 나올까요?&lt;/p&gt;</code></pre>
+        <p class="tip">실무에서는 <strong>1번(외부 파일)</strong>을 가장 많이 쓴다. 여러 페이지가 같은 스타일을 공유하고, HTML이 깔끔해진다.</p>
+
+        <!-- ============================================================ -->
+        <h2>3. 선택자 (css/style.css)</h2>
+        <pre><code>h2 { color: black; }              /* 1. 태그명 */
+.thumbnail { width: 100%; }       /* 2. . + class명 */
+#profile { display: grid; }       /* 3. # + id명 */
+
+p img { }                         /* 자손 선택자 : p 안의 모든 img (자식, 손자 모두) */
+p&gt;img { }                         /* 자식 선택자 : p 바로 아래 img 만 (손자 X) */
+#top img { height: 100%; }        /* 복합 : id 안의 img */</code></pre>
+        <table>
+            <tr><th>선택자</th><th>HTML에서 대응되는 것</th><th>특징</th></tr>
+            <tr><td><code>h2</code></td><td><code>&lt;h2&gt;</code></td><td>그 태그 전부</td></tr>
+            <tr><td><code>.highlight</code></td><td><code>class="highlight"</code></td><td>여러 요소에 반복 사용, <strong>가장 추천</strong></td></tr>
+            <tr><td><code>#profile</code></td><td><code>id="profile"</code></td><td>페이지에 하나뿐인 요소</td></tr>
+            <tr><td><code>p img</code></td><td>p 안쪽 모든 img</td><td>계층 구조 이용 (추천은 아님, 클래스를 적극 활용)</td></tr>
+            <tr><td><code>p&gt;img</code></td><td>p 바로 아래 img</td><td>자식에게만 적용</td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>4. 적용 순서와 우선순위 (7_3_1, 7_4_2)</h2>
+        <h3>4-1. 같은 요소에 여러 스타일이 겹치면 (7_3_1.html)</h3>
+        <pre><code>p {
+    border: solid;
+    border-color: blue;
+}
+#myid {
+    color: red;
+}
+.myClass {
+    color: green;
+    border-color: violet;
+}
+
+&lt;p class="myClass" id="myid"&gt;어떤 결과가 나올까요?&lt;/p&gt;</code></pre>
+        <div class="result demo1">
+            <p class="myClass" id="myid">어떤 결과가 나올까요?</p>
+        </div>
+        <p class="tip">
+            글자색 = <strong>빨강</strong> (id가 class보다 강함), 테두리색 = <strong>보라</strong> (class가 태그보다 강함).<br/>
+            우선순위 : <strong>인라인 style &gt; #id &gt; .class &gt; 태그</strong>
+        </p>
+
+        <h3>4-2. 우선순위가 같으면 나중에 쓴 것이 이긴다 (7_4_2.html)</h3>
+        <pre><code>&lt;link href="./css/7_4_2.css" rel="stylesheet"&gt;   &lt;!-- p { color: green; } --&gt;
+&lt;style&gt;
+    p { color: blue; }                              &lt;!-- 나중에 선언 --&gt;
+&lt;/style&gt;
+&lt;p style="color:red;"&gt;어떤결과가 나올까요?&lt;/p&gt;    &lt;!-- 인라인 : 최강 --&gt;
+&lt;p&gt;이번엔?&lt;/p&gt;</code></pre>
+        <div class="result demo2">
+            <p style="color:red;">어떤결과가 나올까요?</p>
+            <p>이번엔?</p>
+        </div>
+        <p class="tip">첫 번째 p = 빨강 (인라인), 두 번째 p = 파랑 (link의 초록보다 style이 나중에 선언됨).</p>
+        <p class="tip">※ 이 페이지의 실행 결과는 다른 데모와 섞이지 않도록 예제를 <code>.demo1</code> 같은 상자 안에 가둬서 적용했다. 위 코드 박스가 원본이다.</p>
+
+        <!-- ============================================================ -->
+        <h2>5. 글자 스타일 (8_1_1.html)</h2>
+        <pre><code>div {
+    color: #1323ff;
+    font-style: italic;
+    font-weight: 900;
+    font-variant: small-caps;
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+&lt;p style="text-decoration: underline red;"&gt;밑줄?&lt;/p&gt;
+&lt;p style="text-decoration: overline blue;"&gt;윗줄?&lt;/p&gt;
+&lt;p style="text-decoration: line-through blue;"&gt;중간줄?&lt;/p&gt;
+&lt;p style="text-decoration: underline overline line-through red;"&gt;줄여러개?&lt;/p&gt;</code></pre>
+        <div class="result">
+            <div class="demo3">텍스트 색깔은?<br/>A Css Style Example</div>
+            <p style="text-decoration: underline red;">밑줄?</p>
+            <p style="text-decoration: overline blue;">윗줄?</p>
+            <p style="text-decoration: line-through blue;">중간줄?</p>
+            <p style="text-decoration: underline overline line-through red;">줄여러개?</p>
+        </div>
+        <table>
+            <tr><th>속성</th><th>의미</th><th>값 예시</th></tr>
+            <tr><td><code>color</code></td><td>글자색</td><td><code>red</code>, <code>#1323ff</code></td></tr>
+            <tr><td><code>font-size</code></td><td>글자 크기</td><td><code>30px</code></td></tr>
+            <tr><td><code>font-weight</code></td><td>굵기</td><td><code>100</code>(얇게) ~ <code>900</code>(아주 굵게), <code>bold</code></td></tr>
+            <tr><td><code>font-style</code></td><td>기울임</td><td><code>italic</code></td></tr>
+            <tr><td><code>font-variant</code></td><td>소문자를 작은 대문자로</td><td><code>small-caps</code></td></tr>
+            <tr><td><code>font-family</code></td><td>글꼴 (앞에 있는 것부터 시도, 없으면 다음 것)</td><td><code>'Times New Roman', Times, serif</code></td></tr>
+            <tr><td><code>text-align</code></td><td>글자 정렬</td><td><code>left</code> <code>center</code> <code>right</code></td></tr>
+            <tr><td><code>text-decoration</code></td><td>줄 (여러 개 가능)</td><td><code>underline</code> <code>overline</code> <code>line-through</code></td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>6. 박스 모델 : margin, border, padding (8_1_11.html)</h2>
+        <pre><code>[ margin (바깥 여백) [ border (테두리) [ padding (안쪽 여백) [ 내용 ] ] ] ]</code></pre>
+        <pre><code>.img1 {
+    width: 120px;
+    height: 40px;
+    margin-left: 10px;  margin-right: 10px;
+    margin-top: 10px;   margin-bottom: 10px;
+}
+.img2 {
+    width: 120px;
+    height: auto;                  /* 비율 유지, 생략 가능 */
+    margin-left: auto;             /* 좌우 auto = 가운데 정렬 */
+    margin-right: auto;
+    display: block;                /* margin auto 는 block 이어야 동작 */
+    border: 5px black solid;
+    border-radius: 40px 10px 80px; /* 모서리 곡률, 좌측상단에서 시계방향 */
+}
+.img3 {
+    width: 120px;
+    padding-left: 50px;  padding-right: 50px;
+    padding-top: 50px;   padding-bottom: 50px;
+}
+#first {
+    border: solid;
+    border-width: 1px;
+    border-top-width: 1px;
+    border-right-width: 10px;
+    border-bottom-width: 4px;
+}
+#second {
+    border: solid;
+    border-width: 3px;
+    border-bottom-color: green;
+}
+#third {
+    border: 3px blue solid;        /* 한 줄로 줄여 쓰기 : 굵기 색 종류 */
+    border-radius: 5px;
+}</code></pre>
+        <div class="result demo4">
+            <img class="img1" src="./image/istockphoto-1325997570-612x612.jpg" alt="이미지"/>
+            <img class="img2" src="./image/istockphoto-1325997570-612x612.jpg" alt="이미지"/>
+            <img class="img3" src="./image/istockphoto-1325997570-612x612.jpg" alt="이미지" style="border:solid; border-color: red;"/>
+            <p id="first">1px (오른쪽만 10px, 아래 4px)</p>
+            <p id="second">3px (아래만 초록)</p>
+            <p id="third">shortcut</p>
+        </div>
+        <table>
+            <tr><th>속성</th><th>의미</th></tr>
+            <tr><td><code>margin</code></td><td>테두리 <strong>바깥</strong> 여백 (<code>-top</code> <code>-right</code> <code>-bottom</code> <code>-left</code>)</td></tr>
+            <tr><td><code>padding</code></td><td>테두리 <strong>안쪽</strong> 여백</td></tr>
+            <tr><td><code>border</code></td><td>테두리 (굵기, 색, 종류)</td></tr>
+            <tr><td><code>border-radius</code></td><td>모서리 둥글게. <code>50%</code> = 원</td></tr>
+            <tr><td><code>width</code> / <code>height</code></td><td>크기. <code>auto</code> = 자동, <code>100%</code> = 부모 기준</td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>7. 배경 (8_1_12.html)</h2>
+        <pre><code>p {
+    color: black;
+    background-color: yellow;
+}
+.s1 {
+    background-image: url("image/istockphoto-1443562748-612x612.jpg");
+    background-position-y: -200px;
+    background-position-x: 200px;
+}
+
+&lt;p&gt;배경표시한다.&lt;/p&gt;
+&lt;p class="s1"&gt;고양이그림위에 표시한다.&lt;/p&gt;</code></pre>
+        <div class="result demo5">
+            <p>배경표시한다.</p>
+            <p class="s1">고양이그림위에 표시한다.</p>
+        </div>
+        <p class="tip"><code>background-position</code> 으로 이미지의 어느 부분을 보여줄지 정한다. (x = 가로, y = 세로)</p>
+
+        <!-- ============================================================ -->
+        <h2>8. display : inline 과 block (8_1_13.html)</h2>
+        <pre><code>.first  { display: inline; }   /* 옆으로 나란히 */
+.second { display: block; }    /* 한 줄을 통째로 차지 */
+
+&lt;img class="first" src="..." height="100"/&gt;
+&lt;img class="first" src="..." height="100"/&gt;
+&lt;hr/&gt;
+&lt;img class="second" src="..." height="100"/&gt;
+&lt;img class="second" src="..." height="100"/&gt;</code></pre>
+        <div class="result demo6">
+            <img class="first" src="./image/istockphoto-1325997570-612x612.jpg" height="100" alt="이미지"/>
+            <img class="first" src="./image/istockphoto-1325997570-612x612.jpg" height="100" alt="이미지"/>
+            <hr/>
+            <img class="second" src="./image/istockphoto-1325997570-612x612.jpg" height="100" alt="이미지"/>
+            <img class="second" src="./image/istockphoto-1325997570-612x612.jpg" height="100" alt="이미지"/>
+        </div>
+
+        <!-- ============================================================ -->
+        <h2>9. Grid : 격자 배치 (8_2_1.html)</h2>
+        <pre><code>.myGrid {
+    display: grid;
+    grid-template-rows: 1fr 3fr;       /* 행 : 높이 비율 1 : 3 */
+    grid-template-columns: 1fr 2fr;    /* 열 : 너비 비율 1 : 2 */
+}
+/* fr 은 fraction(분수, 비율)의 약자 */
+
+&lt;div class="myGrid"&gt;
+    &lt;div id="first"&gt;1번 영역&lt;/div&gt;
+    &lt;div id="second"&gt;2번 영역&lt;/div&gt;
+    &lt;div id="third"&gt;3번 영역&lt;/div&gt;
+    &lt;div id="forth"&gt;4번 영역&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        <div class="result demo7">
+            <div class="myGrid" style="height:160px;">
+                <div id="g1">1번 영역</div>
+                <div id="g2">2번 영역</div>
+                <div id="g3">3번 영역</div>
+                <div id="g4">4번 영역</div>
+            </div>
+        </div>
+        <p class="tip">자식 요소들이 왼쪽 위부터 차례로 칸에 들어간다. 인스타 클론의 3열 썸네일 그리드는 <code>grid-template-columns: 1fr 1fr 1fr;</code></p>
+
+        <!-- ============================================================ -->
+        <h2>10. 원형 이미지 만들기 (9_1_8.html)</h2>
+        <pre><code>div { width: 150px; height: 150px; }
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* 비율 유지하며 상자를 꽉 채우고 넘치는 부분은 잘라냄 */
+    border: solid white 1px;
+    border-radius: 50%;     /* 50% = 원 */
+}</code></pre>
+        <div class="result demo8">
+            <div class="box"><img src="./image/istockphoto-1443562748-612x612.jpg" alt="원형 이미지"/></div>
+        </div>
+        <table>
+            <tr><th>object-fit</th><th>동작</th></tr>
+            <tr><td><code>cover</code></td><td>상자를 꽉 채움 (일부 잘림) → 프로필 사진에 사용</td></tr>
+            <tr><td><code>contain</code></td><td>이미지 전체가 상자 안에 들어감 (빈 공간 생김) → 인스타 로고에 사용</td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>11. 인스타 클론에서 쓴 CSS 한눈에 (css/style.css)</h2>
+        <table>
+            <tr><th>영역</th><th>핵심 CSS</th><th>의미</th></tr>
+            <tr><td>상단바 <code>#top</code></td><td><code>display: grid; grid-template-columns: 4fr 7fr 4fr;</code></td><td>로고 : 검색창 : 빈칸 = 4 : 7 : 4</td></tr>
+            <tr><td>프로필 <code>#profile</code></td><td><code>grid-template-columns: 1fr 3.5fr;</code></td><td>사진 : 정보 = 1 : 3.5</td></tr>
+            <tr><td>하이라이트 <code>#highlight_area</code></td><td><code>grid-template-columns: 45px 45px 1fr;</code></td><td>고정 폭 2칸 + 나머지</td></tr>
+            <tr><td>통계 바 <code>#stat_bar</code></td><td><code>grid 1fr 1fr 1fr; border-top/bottom</code></td><td>3등분 + 위아래 선</td></tr>
+            <tr><td>썸네일 <code>.thumbnail_grid</code></td><td><code>grid 1fr 1fr 1fr</code> + <code>.thumbnail { width:100% }</code></td><td>한 줄 3장</td></tr>
+            <tr><td>원형 사진 <code>.circle_pic</code></td><td><code>border-radius: 50%</code></td><td>프로필 / 하이라이트 사진</td></tr>
+            <tr><td>버튼 <code>button</code></td><td><code>background-color: white; border: solid gray 1px; border-radius: 3px;</code></td><td>프로필편집 버튼</td></tr>
+        </table>
+        <p>👉 결과 : <a href="./5_1_1.html">인스타그램 프로필 클론</a></p>
+
+        <!-- ============================================================ -->
+        <h2>12. 다음에 배울 CSS</h2>
+        <p>아직 안 배운 것들이다. 코드는 예시로 작성한 것이다.</p>
+
+        <h3>12-1. Flexbox : 한 줄 배치와 정렬</h3>
+        <pre><code>.demo9 {
+    display: flex;
+    gap: 8px;                          /* 칸 사이 간격 */
+    justify-content: space-between;    /* 가로 방향 배치 */
+    align-items: center;               /* 세로 방향 정렬 */
+}</code></pre>
+        <div class="result">
+            <div class="demo9"><div>A</div><div>B</div><div>C</div></div>
+        </div>
+        <p class="tip">grid = 행과 열이 있는 <strong>2차원</strong> 배치, flex = 한 줄(가로 또는 세로) <strong>1차원</strong> 배치. 둘 다 쓰임새가 다르다.</p>
+
+        <h3>12-2. 가상 클래스 :hover 와 transition</h3>
+        <pre><code>.btn {
+    background-color: #3a6ff7;
+    transition: background-color 0.3s;   /* 부드럽게 바뀜 */
+}
+.btn:hover {                            /* 마우스를 올렸을 때 */
+    background-color: #e8590c;
+}</code></pre>
+        <div class="result demo10">
+            <button class="btn">마우스를 올려보세요</button>
+        </div>
+
+        <h3>12-3. CSS 변수 : 값을 한 번만 정의</h3>
+        <pre><code>.demo11 { --main-color: #e8590c; }
+.demo11 span {
+    color: var(--main-color);
+    border: 2px solid var(--main-color);
+}</code></pre>
+        <div class="result demo11">
+            <span>같은 색을 변수로 재사용</span>
+        </div>
+
+        <h3>12-4. position : 위치 지정</h3>
+        <pre><code>.box   { position: relative; }          /* 기준이 되는 부모 */
+.badge { position: absolute; top: 8px; right: 8px; }   /* 부모 기준 위치 */</code></pre>
+        <div class="result">
+            <div class="demo12">부모 상자<span class="badge">N</span></div>
+        </div>
+
+        <h3>12-5. 반응형 : media query</h3>
+        <pre><code>@media (max-width: 600px) {
+    .thumbnail_grid { grid-template-columns: 1fr 1fr; }   /* 좁은 화면에서는 2열 */
+}</code></pre>
+        <p class="tip">화면 너비에 따라 다른 스타일을 적용한다. 브라우저 창 너비를 줄여보면 이 노트 페이지도 <code>max-width</code>로 폭이 조절되는 걸 볼 수 있다.</p>
+
+        <h3>학습 순서 제안</h3>
+        <ol>
+            <li>인스타 클론의 grid 일부를 <strong>flexbox</strong>로 바꿔 보기</li>
+            <li>버튼 / 썸네일에 <strong>:hover</strong> 효과 주기</li>
+            <li>색을 <strong>CSS 변수</strong>로 정리하기</li>
+            <li><strong>media query</strong>로 모바일 / PC 화면 대응하기</li>
+        </ol>
+    </body>
+</html>

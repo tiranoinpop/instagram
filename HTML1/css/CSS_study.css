@@ -1,0 +1,138 @@
+/* ===== 노트 페이지 자체 스타일 ===== */
+body {
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 16px 40px;
+    font-family: 'Malgun Gothic', sans-serif;
+    line-height: 1.6;
+    color: #222;
+}
+h1 { border-bottom: 3px solid #222; }
+h2 {
+    margin-top: 48px;
+    border-left: 6px solid #e8590c;
+    padding-left: 10px;
+}
+code {
+    background-color: #f0f0f0;
+    padding: 1px 5px;
+    border-radius: 4px;
+}
+pre {
+    background-color: #1e1e1e;
+    color: #e6e6e6;
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+pre code { background-color: transparent; padding: 0; }
+.result {
+    border: 1px dashed #999;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+}
+.result::before {
+    content: "실행 결과";
+    display: block;
+    font-size: 12px;
+    color: #888;
+}
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background-color: #f5f5f5; }
+.tip {
+    background-color: #fff7d6;
+    border-left: 4px solid #f0b400;
+    padding: 8px 12px;
+}
+
+/* ===== 아래부터는 "실행 결과" 데모용 스타일 (예제 코드를 .demoN 안으로 가둔 것) ===== */
+
+/* 7_3_1 : 스타일의 중첩 */
+.demo1 p { border: solid; border-color: blue; }
+.demo1 #myid { color: red; }
+.demo1 .myClass { color: green; border-color: violet; }
+
+/* 7_4_2 : 적용 순서 */
+.demo2 p { color: blue; }
+
+/* 8_1_1 : 글자 */
+.demo3 {
+    color: #1323ff;
+    font-style: italic;
+    font-weight: 900;
+    font-variant: small-caps;
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+/* 8_1_11 : 박스 모델 */
+.demo4 .img1 {
+    width: 120px; height: 40px;
+    margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;
+}
+.demo4 .img2 {
+    width: 120px; height: auto;
+    margin-left: auto; margin-right: auto;
+    display: block;
+    border: 5px black solid;
+    border-radius: 40px 10px 80px;
+}
+.demo4 .img3 {
+    width: 120px;
+    padding-left: 50px; padding-right: 50px; padding-top: 50px; padding-bottom: 50px;
+}
+.demo4 #first { border: solid; border-width: 1px; border-top-width: 1px; border-right-width: 10px; border-bottom-width: 4px; }
+.demo4 #second { border: solid; border-width: 3px; border-bottom-color: green; }
+.demo4 #third { border: 3px blue solid; border-radius: 5px; }
+
+/* 8_1_12 : 배경 */
+.demo5 p { color: black; background-color: yellow; }
+.demo5 .s1 {
+    background-image: url("../image/istockphoto-1443562748-612x612.jpg");
+    background-position-y: -200px;
+    background-position-x: 200px;
+}
+
+/* 8_1_13 : display */
+.demo6 .first { display: inline; }
+.demo6 .second { display: block; }
+
+/* 8_2_1 : grid */
+.demo7 .myGrid {
+    color: black;
+    display: grid;
+    grid-template-rows: 1fr 3fr;
+    grid-template-columns: 1fr 2fr;
+}
+.demo7 #g1 { background-color: yellow; }
+.demo7 #g2 { background-color: green; }
+.demo7 #g3 { background-color: purple; }
+.demo7 #g4 { background-color: peru; }
+
+/* 9_1_8 : 원형 이미지 */
+.demo8 .box { width: 150px; height: 150px; }
+.demo8 .box img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border: solid white 1px;
+    border-radius: 50%;
+}
+
+/* ===== 다음에 배울 것 데모 ===== */
+.demo9 { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
+.demo9 div { background-color: #ffd8a8; padding: 12px 20px; }
+.demo10 .btn {
+    background-color: #3a6ff7; color: white;
+    border: none; border-radius: 6px; padding: 8px 18px;
+    transition: background-color 0.3s;
+}
+.demo10 .btn:hover { background-color: #e8590c; }
+.demo11 { --main-color: #e8590c; }
+.demo11 span { color: var(--main-color); border: 2px solid var(--main-color); padding: 2px 8px; }
+.demo12 { position: relative; height: 80px; background-color: #f1f3f5; }
+.demo12 .badge { position: absolute; top: 8px; right: 8px; background-color: red; color: white; padding: 2px 8px; border-radius: 10px; }
