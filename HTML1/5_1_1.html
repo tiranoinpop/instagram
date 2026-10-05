@@ -15,13 +15,17 @@
         </style>
     </head>
     <body>
-        <div id="top">
+        <!-- header : 페이지 상단 영역 (로고, 검색창) -->
+        <header id="top">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/150px-Instagram_logo.svg.png" alt="인스타그램 로고"/>
             <input type="search" value="검색"/>
             <div></div>
-        </div>
-        
-        <div id="profile">
+        </header>
+
+        <!-- main : 페이지의 핵심 내용 (페이지당 하나) -->
+        <main>
+        <!-- section : 주제별 구역 (프로필 / 소개 / 하이라이트 / 통계 / 게시물) -->
+        <section id="profile">
             <div id="profile_pic">
                 <img class="circle_pic" src="./image/profile2.jpg" alt="프로필 사진"/>
             </div>
@@ -29,9 +33,9 @@
                 <div id="id">tiranoinpop</div>
                 <button>프로필편집</button>    
             </div>
-        </div>
+        </section>
 
-        <div>
+        <section id="bio">
             <p>
                 <strong>
                 김인수(Kim insu)
@@ -43,9 +47,9 @@
                     github.com/tiranoinpop/instagram
                 </a>
             </p>
-        </div>
+        </section>
 
-        <div id="highlight_area">
+        <section id="highlight_area">
             <div class="highlight">
                 <div class="highlight_pic">
                     <img src="./image/istockphoto-1325997570-612x612.jpg" class="circle_pic" alt="하이라이트 1">    
@@ -63,11 +67,9 @@
                 </div>
             </div>
             <div></div>
-        </div>
+        </section>
 
-
-
-        <div id="stat_bar">
+        <section id="stat_bar">
             <div class="stat">
                 게시물<br />
                 133
@@ -80,9 +82,12 @@
                 팔로우<br />
                 408
             </div>
-        </div>
-        <div>아이콘이 들어갈 자리</div>
+        </section>
 
+        <!-- nav : 이동 메뉴 (게시물 / 태그됨 같은 탭 아이콘이 들어갈 자리) -->
+        <nav>아이콘이 들어갈 자리</nav>
+
+        <section id="posts">
         <div class="thumbnail_grid">
             <img src="image/thumbnails/2025_09_22_22_31_51.jpg" class="thumbnail" alt="게시물 썸네일"/>
             <img src="image/thumbnails/2025_09_23_00_17_30.jpg" class="thumbnail" alt="게시물 썸네일"/>
@@ -100,8 +105,12 @@
             <img src="image/thumbnails/2025_09_3_23_30_40.jpg" class="thumbnail" alt="게시물 썸네일"/>
             <img src="image/thumbnails/2025_10_10_13_38_37.jpg" class="thumbnail" alt="게시물 썸네일"/>
         </div>
-        <div>
+        </section>
+        </main>
 
-        </div>
+        <!-- footer : 페이지 하단 영역 -->
+        <footer>
+
+        </footer>
     </body>
 </html>
