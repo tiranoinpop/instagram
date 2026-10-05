@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!-- HTML 복습 노트 : 지금까지 배운 태그 정리 (예제 파일 3_3_1 ~ 6_1_16) -->
+<html lang="ko">
+    <head>
+        <!-- meta charset : 한글이 깨지지 않도록 문자 인코딩 지정 (항상 head 맨 위) -->
+        <meta charset="UTF-8">
+        <!-- viewport : 모바일 화면 크기에 맞춰 보여주기 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- title : 브라우저 탭에 표시되는 제목 -->
+        <title>HTML 복습 노트</title>
+        <!-- style 태그는 head 안에 두는 것이 표준 -->
+        <style>
+            body {
+                max-width: 860px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0 16px 40px;
+                font-family: 'Malgun Gothic', sans-serif;
+                line-height: 1.6;
+                color: #222;
+            }
+            h1 {
+                border-bottom: 3px solid #222;
+            }
+            h2 {
+                margin-top: 48px;
+                border-left: 6px solid #3a6ff7;
+                padding-left: 10px;
+            }
+            code {
+                background-color: #f0f0f0;
+                padding: 1px 5px;
+                border-radius: 4px;
+            }
+            pre {
+                background-color: #1e1e1e;
+                color: #e6e6e6;
+                padding: 12px;
+                border-radius: 6px;
+                overflow-x: auto;
+            }
+            pre code {
+                background-color: transparent;
+                padding: 0;
+            }
+            .result {
+                border: 1px dashed #999;
+                padding: 12px;
+                border-radius: 6px;
+                margin-bottom: 16px;
+            }
+            .result::before {
+                content: "실행 결과";
+                display: block;
+                font-size: 12px;
+                color: #888;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th, td {
+                border: 1px solid #ccc;
+                padding: 6px 10px;
+                text-align: left;
+            }
+            th {
+                background-color: #f5f5f5;
+            }
+            .tip {
+                background-color: #fff7d6;
+                border-left: 4px solid #f0b400;
+                padding: 8px 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>HTML 복습 노트</h1>
+        <p>
+            HTML은 <strong>정보</strong>와 그 정보의 <strong>구조</strong>를 표현하는 언어다.<br/>
+            모양(디자인)은 CSS, 동작은 JavaScript가 담당한다.
+        </p>
+
+        <!-- ============================================================ -->
+        <h2>1. 태그의 기본 문법</h2>
+        <pre><code>&lt;태그명 속성="값"&gt;내용&lt;/태그명&gt;   &lt;!-- 여는 태그 + 닫는 태그 --&gt;
+&lt;태그명 속성="값"/&gt;                 &lt;!-- 내용이 없는 태그 (img, br, input ...) --&gt;
+&lt;!-- 주석 : 화면에 안 보임, VS Code 단축키 Ctrl + / --&gt;</code></pre>
+
+        <!-- ============================================================ -->
+        <h2>2. 문서 기본 구조</h2>
+        <pre><code>&lt;!DOCTYPE html&gt;            &lt;!-- 이 문서는 HTML5 라고 선언 (맨 첫 줄) --&gt;
+&lt;html lang="ko"&gt;           &lt;!-- 문서 전체를 감싸는 태그 --&gt;
+    &lt;head&gt;                 &lt;!-- 화면에 안 보이는 문서 정보 --&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;title&gt;탭 제목&lt;/title&gt;
+        &lt;link href="./css/style.css" rel="stylesheet"&gt;   &lt;!-- 외부 CSS 연결 --&gt;
+        &lt;style&gt; /* 문서 안에 CSS 작성 */ &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;                 &lt;!-- 화면에 보이는 내용 --&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+        <table>
+            <tr><th>태그</th><th>역할</th></tr>
+            <tr><td><code>&lt;!DOCTYPE html&gt;</code></td><td>HTML5 문서 선언</td></tr>
+            <tr><td><code>&lt;html&gt;</code></td><td>문서 전체(루트). <code>lang="ko"</code>로 언어 지정</td></tr>
+            <tr><td><code>&lt;head&gt;</code></td><td>문서 정보 영역 (화면에 안 보임)</td></tr>
+            <tr><td><code>&lt;meta&gt;</code></td><td>인코딩 등 부가 정보</td></tr>
+            <tr><td><code>&lt;title&gt;</code></td><td>브라우저 탭 제목</td></tr>
+            <tr><td><code>&lt;link&gt;</code></td><td>외부 파일 연결. <code>href</code>=경로, <code>rel</code>=관계(relation)</td></tr>
+            <tr><td><code>&lt;style&gt;</code></td><td>문서 안에 CSS 작성</td></tr>
+            <tr><td><code>&lt;body&gt;</code></td><td>화면에 보이는 내용 영역</td></tr>
+        </table>
+        <p class="tip">
+            html / head / body 를 생략해도 화면이 나오는 이유 : 브라우저가 자동으로 채워 넣어주기 때문 (7_4_2.html).<br/>
+            그래도 항상 직접 작성하는 습관을 들이자.
+        </p>
+
+        <!-- ============================================================ -->
+        <h2>3. 텍스트 태그</h2>
+        <pre><code>&lt;h1&gt;1.대제목&lt;/h1&gt;
+&lt;h2&gt;1.1.중제목&lt;/h2&gt;
+&lt;p&gt;문단 하나&lt;/p&gt;
+첫째 줄&lt;br/&gt;둘째 줄
+&lt;strong&gt;중요한 글자 (굵게)&lt;/strong&gt;</code></pre>
+        <div class="result">
+            <h1>1.대제목</h1>
+            <h2 style="margin-top:0; border:none; padding:0;">1.1.중제목</h2>
+            <p>문단 하나</p>
+            첫째 줄<br/>둘째 줄<br/>
+            <strong>중요한 글자 (굵게)</strong>
+        </div>
+        <table>
+            <tr><th>태그</th><th>역할</th></tr>
+            <tr><td><code>&lt;h1&gt;</code> ~ <code>&lt;h6&gt;</code></td><td>제목 (숫자가 작을수록 큰 제목, h1은 페이지당 하나 권장)</td></tr>
+            <tr><td><code>&lt;p&gt;</code></td><td>문단 (paragraph). 위아래에 여백이 생김</td></tr>
+            <tr><td><code>&lt;br/&gt;</code></td><td>줄바꿈 (닫는 태그 없음)</td></tr>
+            <tr><td><code>&lt;strong&gt;</code></td><td>중요한 내용 강조 (굵게 표시)</td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>4. 링크와 이미지</h2>
+        <pre><code>&lt;a href="https://github.com/tiranoinpop/instagram"&gt;내 깃허브&lt;/a&gt;
+&lt;img src="./image/profile2.jpg" alt="프로필 사진" width="80"/&gt;</code></pre>
+        <div class="result">
+            <a href="https://github.com/tiranoinpop/instagram">내 깃허브</a><br/>
+            <img src="./image/profile2.jpg" alt="프로필 사진" width="80"/>
+        </div>
+        <table>
+            <tr><th>태그 / 속성</th><th>역할</th></tr>
+            <tr><td><code>&lt;a href=""&gt;</code></td><td>링크. <code>href</code>에 이동할 주소</td></tr>
+            <tr><td><code>&lt;img src=""&gt;</code></td><td>이미지. 인터넷 주소(URL)나 내 폴더 경로 모두 가능</td></tr>
+            <tr><td><code>alt</code></td><td>이미지 설명 (이미지가 안 뜰 때, 화면낭독기용) → <strong>필수</strong></td></tr>
+            <tr><td><code>width</code> / <code>height</code></td><td>크기. 속성에는 <strong>숫자만</strong> (<code>height="100"</code>), 단위는 CSS에서</td></tr>
+        </table>
+        <p class="tip">
+            경로 : <code>./</code> = 현재 폴더, <code>../</code> = 상위 폴더.
+            <code>./image/profile2.jpg</code> 는 "현재 폴더 안 image 폴더의 profile2.jpg"
+        </p>
+
+        <!-- ============================================================ -->
+        <h2>5. 영역 나누기 : div, id, class</h2>
+        <pre><code>&lt;div id="profile"&gt;                     &lt;!-- id : 페이지에 단 하나 --&gt;
+    &lt;img class="circle_pic" src="..."/&gt;  &lt;!-- class : 여러 요소에 반복 사용 --&gt;
+&lt;/div&gt;</code></pre>
+        <table>
+            <tr><th>태그 / 속성</th><th>역할</th><th>CSS에서 선택</th></tr>
+            <tr><td><code>&lt;div&gt;</code></td><td>의미 없는 영역 상자 (레이아웃용)</td><td><code>div</code></td></tr>
+            <tr><td><code>id</code></td><td>고유한 이름 (중복 X)</td><td><code>#profile</code></td></tr>
+            <tr><td><code>class</code></td><td>그룹 이름 (중복 O, 여러 개 가능)</td><td><code>.circle_pic</code></td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>6. 입력 태그 : input, button</h2>
+        <p><code>&lt;input type="종류"/&gt;</code> 하나로 <code>type</code>만 바꿔서 여러 입력창을 만든다. 입력받은 데이터는 서버로 전달된다.</p>
+
+        <h3>6-1. 글자 / 숫자 / 파일 (5_1_2.html)</h3>
+        <div class="result">
+            <table>
+                <tr><th>type</th><th>코드</th><th>결과</th></tr>
+                <tr><td>text</td><td><code>&lt;input type="text" value="텍스트"/&gt;</code></td><td><input type="text" value="텍스트"/></td></tr>
+                <tr><td>search</td><td><code>&lt;input type="search" placeholder="검색"/&gt;</code></td><td><input type="search" placeholder="검색"/></td></tr>
+                <tr><td>number</td><td><code>&lt;input type="number" value="123"/&gt;</code></td><td><input type="number" value="123"/></td></tr>
+                <tr><td>password</td><td><code>&lt;input type="password"/&gt;</code></td><td><input type="password" value="secret"/></td></tr>
+                <tr><td>tel</td><td><code>&lt;input type="tel"/&gt;</code></td><td><input type="tel"/></td></tr>
+                <tr><td>color</td><td><code>&lt;input type="color" value="#ff0000"/&gt;</code></td><td><input type="color" value="#ff0000"/></td></tr>
+                <tr><td>file</td><td><code>&lt;input type="file" accept="image/*"/&gt;</code></td><td><input type="file" accept="image/*"/></td></tr>
+                <tr><td>button</td><td><code>&lt;input type="button" value="버튼1"/&gt;</code></td><td><input type="button" value="버튼1"/></td></tr>
+                <tr><td>submit</td><td><code>&lt;input type="submit" value="버튼2"/&gt;</code></td><td><input type="submit" value="버튼2"/></td></tr>
+                <tr><td>(button 태그)</td><td><code>&lt;button&gt;좋은버튼&lt;/button&gt;</code></td><td><button>좋은버튼</button></td></tr>
+            </table>
+        </div>
+        <p class="tip">
+            <code>value</code> = 미리 들어있는 실제 값, <code>placeholder</code> = 비어있을 때 보이는 안내 글자.<br/>
+            <code>accept</code> 여러 개는 <strong>쉼표</strong>로 구분 : <code>accept=".jpg,.png,.pdf"</code><br/>
+            <code>&lt;button&gt;</code>은 안에 글자, 이미지 등을 넣을 수 있어서 <code>input type="button"</code>보다 자유롭다.
+        </p>
+
+        <h3>6-2. 선택 / 범위 / 날짜 (6_1_16.html)</h3>
+        <div class="result">
+            <p>
+                <input type="radio" name="food" checked/>한식
+                <input type="radio" name="food"/>중식
+                <input type="radio" name="food"/>일식
+                <input type="radio" name="food"/>양식
+            </p>
+            <p>
+                <input type="range" min="0" max="1000" step="10" value="10"/>
+            </p>
+            <p>
+                <input type="date"/>
+                <input type="month"/>
+                <input type="week"/>
+                <input type="time"/>
+                <input type="datetime-local"/>
+            </p>
+        </div>
+        <table>
+            <tr><th>type / 속성</th><th>설명</th></tr>
+            <tr><td><code>radio</code></td><td>여러 개 중 하나만 선택. <strong>name이 같으면 한 그룹</strong></td></tr>
+            <tr><td><code>checked</code></td><td>처음부터 선택된 상태</td></tr>
+            <tr><td><code>range</code></td><td>슬라이더. <code>min</code>, <code>max</code>, <code>step</code>(간격), <code>value</code>(시작값)</td></tr>
+            <tr><td><code>date</code> / <code>month</code> / <code>week</code> / <code>time</code> / <code>datetime-local</code></td><td>날짜, 월, 주, 시간, 날짜+시간 선택</td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>7. 자주 했던 실수 체크리스트</h2>
+        <table>
+            <tr><th>잘못된 코드</th><th>올바른 코드</th></tr>
+            <tr><td>head에 <code>meta charset</code>, <code>title</code> 없음</td><td><code>&lt;meta charset="UTF-8"&gt;</code>, <code>&lt;title&gt;</code> 항상 작성</td></tr>
+            <tr><td>body 안에 <code>&lt;style&gt;</code></td><td>head 안에 <code>&lt;style&gt;</code></td></tr>
+            <tr><td><code>&lt;img src="..."&gt;</code></td><td><code>&lt;img src="..." alt="설명"&gt;</code></td></tr>
+            <tr><td><code>height=100px/&gt;</code></td><td><code>height="100" /&gt;</code> (속성값은 따옴표, 숫자만)</td></tr>
+            <tr><td><code>accept=".jpg .png"</code></td><td><code>accept=".jpg,.png"</code></td></tr>
+        </table>
+
+        <!-- ============================================================ -->
+        <h2>8. 다음에 배울 태그</h2>
+        <ul>
+            <li><strong>시맨틱 태그</strong> : <code>&lt;header&gt;</code> <code>&lt;nav&gt;</code> <code>&lt;main&gt;</code> <code>&lt;section&gt;</code> <code>&lt;footer&gt;</code> - div 대신 의미 있는 이름의 영역</li>
+            <li><strong>목록</strong> : <code>&lt;ul&gt;</code> <code>&lt;ol&gt;</code> <code>&lt;li&gt;</code> (이 목록이 바로 ul + li)</li>
+            <li><strong>표</strong> : <code>&lt;table&gt;</code> <code>&lt;tr&gt;</code> <code>&lt;th&gt;</code> <code>&lt;td&gt;</code> (이 페이지의 표들)</li>
+            <li><strong>폼</strong> : <code>&lt;form&gt;</code> <code>&lt;label&gt;</code> - input들을 묶어서 서버로 보내기</li>
+        </ul>
+
+        <p>
+            👉 종합 실습 결과물 : <a href="./5_1_1.html">인스타그램 프로필 클론 (5_1_1.html)</a>
+        </p>
+    </body>
+</html>
