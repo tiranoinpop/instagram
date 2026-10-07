@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- 주석은 ctrl + / 키 -->
+<!-- html_css_study_sample.html : 5_1_1.html (인스타그램 프로필 클론) 을 복제해서 다듬은 연습용 샘플 -->
+<!-- 5_1_1.html 과 차이점
+     1. 스타일을 css/html_css_study_sample.css 로 분리 (모든 크기를 vw 로 지정 → 창 크기에 맞춰 같이 변함)
+     2. meta viewport 추가 (모바일에서 vw 가 제대로 동작하도록)
+     3. 썸네일 3줄(div 3개)을 grid 하나로 통합 (9장이 3열로 자동 줄바꿈) -->
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>인스타그램 프로필 (study sample)</title>
+        <link href="./css/html_css_study_sample.css" rel="stylesheet">
+    </head>
+    <body>
+        <script>
+            console.log("test")
+            console.log("insu")
+            alert("오늘은 기분이 어때?")
+        </script>
+        <!-- header : 페이지 상단 영역 (로고, 검색창) -->
+        <header id="top">
+            <img src="./image/instagram_logo.png" alt="인스타그램 로고"/>
+            <input type="search" value="검색"/>
+            <div></div>
+        </header>
+
+        <!-- main : 페이지의 핵심 내용 (페이지당 하나) -->
+        <main>
+            <!-- section : 주제별 구역 (프로필 / 소개 / 하이라이트 / 통계 / 게시물) -->
+            <section id="profile">
+                <div id="profile_pic">
+                    <img class="circle_pic" src="./image/profile2.jpg" alt="프로필 사진"/>
+                </div>
+                <div id="profile_info">
+                    <div id="id">tiranoinpop</div>
+                    <button>프로필편집</button>
+                </div>
+            </section>
+
+            <section id="bio">
+                <p>
+                    <strong>김인수(Kim insu)</strong><br/>
+                    프로그래머
+                </p>
+                <p>
+                    <a href="https://github.com/tiranoinpop/instagram">github.com/tiranoinpop/instagram</a>
+                </p>
+            </section>
+
+            <section id="highlight_area">
+                <div class="highlight">
+                    <div class="highlight_pic">
+                        <img src="./image/istockphoto-1325997570-612x612.jpg" class="circle_pic" alt="하이라이트 1"/>
+                    </div>
+                    <div>❤️</div>
+                </div>
+                <div class="highlight">
+                    <div class="highlight_pic">
+                        <img src="./image/istockphoto-1443562748-612x612.jpg" class="circle_pic" alt="하이라이트 2"/>
+                    </div>
+                    <div>😊</div>
+                </div>
+                <div></div>
+            </section>
+
+            <section id="stat_bar">
+                <div class="stat">게시물<br/>133</div>
+                <div class="stat">팔로워<br/>408</div>
+                <div class="stat">팔로우<br/>408</div>
+            </section>
+
+            <!-- nav : 이동 메뉴 (게시물 / 태그됨 같은 탭 아이콘이 들어갈 자리) -->
+            <nav>아이콘이 들어갈 자리</nav>
+
+            <!-- 썸네일 9장을 grid 하나에 넣으면 3열마다 자동으로 줄이 바뀜 -->
+            <section id="posts" class="thumbnail_grid">
+                <img src="image/thumbnails/2025_09_22_22_31_51.jpg" class="thumbnail" alt="게시물 1"/>
+                <img src="image/thumbnails/2025_09_23_00_17_30.jpg" class="thumbnail" alt="게시물 2"/>
+                <img src="image/thumbnails/2025_09_23_21_58_48.jpg" class="thumbnail" alt="게시물 3"/>
+                <img src="image/thumbnails/2025_09_27_12_34_33.jpg" class="thumbnail" alt="게시물 4"/>
+                <img src="image/thumbnails/2025_09_28_01_31_12.jpg" class="thumbnail" alt="게시물 5"/>
+                <img src="image/thumbnails/2025_09_28_10_06_58.jpg" class="thumbnail" alt="게시물 6"/>
+                <img src="image/thumbnails/2025_09_3_23_15_59.jpg" class="thumbnail" alt="게시물 7"/>
+                <img src="image/thumbnails/2025_09_3_23_30_40.jpg" class="thumbnail" alt="게시물 8"/>
+                <img src="image/thumbnails/2025_10_10_13_38_37.jpg" class="thumbnail" alt="게시물 9"/>
+            </section>
+        </main>
+
+        <!-- footer : 페이지 하단 영역 (아직 비어 있음) -->
+        <footer></footer>
+    </body>
+</html>

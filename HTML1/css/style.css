@@ -91,7 +91,7 @@ button {
 }
 #top {
     display: grid;
-    grid-template-columns: 4fr 7fr 4fr;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) minmax(0, 4fr);
     height: 50px;
 
     border-bottom: solid gray 0.1px;
@@ -101,6 +101,7 @@ button {
     margin-left:auto;
     margin-right: auto;
 
+    width: 100%;
     height: 100%;
     object-fit: contain;
 }

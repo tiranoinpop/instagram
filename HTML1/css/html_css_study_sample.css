@@ -1,0 +1,118 @@
+/* html_css_study_sample.html 전용 스타일
+   모든 크기를 vw 로 지정 → 브라우저 창 너비에 비례해서 같이 커지고 작아짐
+   변환 기준 : 모바일 폭 400px 을 100vw 로 보고  1vw = 4px  (예: 50px → 12.5vw) */
+
+/* 선택자 사용법
+   1. 태그명 (ex h2)
+   2. . + class명 (ex .highlight)
+   3. # + id명 (ex #profile)
+   p img  : p 안의 모든 img (자식, 후손)
+   p>img  : p 바로 아래 img 만 (자식)
+   클래스를 적극 활용하는 것을 추천 */
+
+body {
+    margin: 0;            /* 브라우저 기본 여백 8px 제거 */
+    font-size: 4vw;       /* 기본 글자 크기 (16px 에 해당) */
+}
+
+/* ===== 상단바 ===== */
+#top {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr) minmax(0, 4fr);   /* minmax(0, ..) : 이미지 원래 크기 때문에 칸이 늘어나는 것 방지 */
+    height: 12.5vw;                       /* 50px */
+
+    border-bottom: solid gray 1px;
+    margin-bottom: 2.5vw;                 /* 10px */
+}
+#top img {
+    width: 100%;                          /* 칸 폭에 맞춤 (원본 330px 로 커지지 않게) */
+    height: 100%;
+    object-fit: contain;                  /* 비율 유지하며 칸 안에 전부 보이게 */
+}
+#top input {
+    height: 60%;
+    width: 95%;
+    font-size: 3.5vw;                     /* input 은 글자 크기를 따로 지정해야 함 */
+
+    margin: auto;                         /* 상하좌우 가운데 */
+}
+
+/* ===== 프로필 ===== */
+#profile {
+    display: grid;
+    grid-template-columns: 1fr 3.5fr;
+}
+#profile_pic {
+    width: 12.5vw;                        /* 50px */
+    height: 12.5vw;
+}
+#profile_info {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    height: 12.5vw;                       /* 50px */
+}
+#id {
+    font-size: 4.5vw;                     /* 18px */
+    font-weight: 100;
+}
+.circle_pic {
+    border: solid white 1px;
+    border-radius: 50%;
+
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                    /* 비율 유지하며 꽉 채움 */
+}
+button {
+    height: 80%;
+    width: 80%;
+
+    font-size: 2.5vw;                     /* 10px */
+    background-color: white;
+    border: solid gray 1px;
+    border-radius: 0.75vw;                /* 3px */
+}
+
+/* ===== 소개글 ===== */
+#bio {
+    padding-left: 2vw;
+    padding-right: 2vw;
+}
+
+/* ===== 하이라이트 ===== */
+#highlight_area {
+    display: grid;
+    grid-template-columns: 11.25vw 11.25vw 1fr;   /* 45px 45px 나머지 */
+}
+.highlight {
+    text-align: center;
+}
+.highlight_pic {
+    width: 8.75vw;                        /* 35px */
+    height: 8.75vw;
+
+    margin: 0 auto;
+}
+
+/* ===== 통계 바 ===== */
+#stat_bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+
+    margin: 1.25vw 0;                     /* 위아래 5px */
+}
+.stat {
+    text-align: center;
+}
+
+/* ===== 게시물 썸네일 ===== */
+.thumbnail_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.thumbnail {
+    width: 100%;
+}

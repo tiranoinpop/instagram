@@ -1,0 +1,11 @@
+/* CSS_study.html 15-4 데모용
+   <link media="(max-width: 699px)"> 로 연결됨 → 화면 너비 699px 이하일 때만 적용 */
+.demo26 .linkdemo {
+    background-color: #ffe8cc;
+    border: 2px solid #e8590c;
+    padding: 12px;
+    text-align: center;
+}
+.demo26 .linkdemo::after {
+    content: "🟠 media_demo_narrow.css 적용 중 (699px 이하)";
+}

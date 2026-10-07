@@ -136,3 +136,136 @@ th { background-color: #f5f5f5; }
 .demo11 span { color: var(--main-color); border: 2px solid var(--main-color); padding: 2px 8px; }
 .demo12 { position: relative; height: 80px; background-color: #f1f3f5; }
 .demo12 .badge { position: absolute; top: 8px; right: 8px; background-color: red; color: white; padding: 2px 8px; border-radius: 10px; }
+
+/* ===== 우선순위 강조 박스 ===== */
+.rank {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+    padding: 16px;
+    background-color: #fff4e6;
+    border: 2px solid #e8590c;
+    border-radius: 10px;
+    font-size: 18px;
+}
+.rank .step {
+    background-color: white;
+    border: 2px solid #e8590c;
+    border-radius: 8px;
+    padding: 8px 16px;
+    text-align: center;
+}
+.rank .step small { display: block; font-size: 12px; color: #666; }
+.rank .arrow { font-size: 22px; font-weight: bold; color: #e8590c; }
+.rank-title { font-weight: bold; margin-bottom: 0; }
+.rank.blue { background-color: #edf2ff; border-color: #3a6ff7; }
+.rank.blue .step { border-color: #3a6ff7; }
+.rank.blue .arrow { color: #3a6ff7; }
+.key {
+    background-color: #fff3bf;
+    padding: 0 4px;
+    font-weight: bold;
+}
+
+/* 5번 데모 : <style> 태그로 쓴 스타일은 CSS_study.html 의 head 안에 있음 */
+
+/* ===== 6번 색상 데모 ===== */
+.sw {
+    display: inline-block;
+    width: 120px;
+    height: 28px;
+    border: 1px solid #999;
+    vertical-align: middle;
+}
+.checker {
+    background-image: repeating-linear-gradient(45deg, #ddd 0 8px, #fff 8px 16px);
+}
+
+/* ===== 8번 공간 단위 데모 ===== */
+.demo20 .parent { width: 300px; background-color: #e7f5ff; padding: 4px 0; }
+.demo20 .half { width: 50%; background-color: #74c0fc; margin-bottom: 4px; }
+.demo20 .full { width: 100%; background-color: #4dabf7; }
+.demo20 .centered { width: 120px; margin-left: auto; margin-right: auto; background-color: #ffd8a8; text-align: center; }
+.demo20 .vw { background-color: #b2f2bb; margin-bottom: 4px; white-space: nowrap; }
+.demo20 .vw10 { width: 10vw; }
+.demo20 .vw30 { width: 30vw; }
+.demo20 .vw50 { width: 50vw; }
+
+/* ===== 9번 여백 / 테두리 데모 ===== */
+.demo21 .pad { background-color: #ffe3e3; margin-bottom: 8px; border: 1px dashed #c92a2a; }
+.demo21 .p1 { padding: 20px; }
+.demo21 .p2 { padding: 10px 40px; }
+.demo21 .p3 { padding: 5px 10px 20px 40px; }
+.demo21 .bd { display: inline-block; width: 90px; height: 60px; margin: 4px; text-align: center; line-height: 60px; font-size: 13px; }
+.demo21 .b1 { border: 3px solid blue; }
+.demo21 .b2 { border: 3px dashed blue; }
+.demo21 .b3 { border: 3px dotted blue; }
+.demo21 .b4 { border: 6px double blue; }
+.demo21 .r1 { border: 3px solid green; border-radius: 10px; }
+.demo21 .r2 { border: 3px solid green; border-radius: 50%; }
+.demo21 .r3 { border: 3px solid green; border-radius: 40px 10px 80px; }
+
+/* ===== 12번 grid 적용 방법 데모 ===== */
+.demo24 .noGrid { grid-template-columns: 1fr 1fr 1fr; }
+.demo24 .yesGrid { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+.demo24 .gapGrid { gap: 8px; }
+.demo24 .noGrid div, .demo24 .yesGrid div { background-color: #d0ebff; border: 1px solid #4dabf7; padding: 6px; text-align: center; }
+
+/* ===== 15번 미디어 쿼리 데모 (기본 스타일 → 뒤에 @media 로 덮어쓰기) ===== */
+.demo25 .now { background-color: #d0ebff; padding: 10px; text-align: center; margin-bottom: 8px; }
+.demo25 .now::after { content: "💻 넓은 화면 (701px 이상)"; }
+.demo25 .cols { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; }
+.demo25 .cols div { background-color: #e7f5ff; border: 1px solid #4dabf7; padding: 6px; text-align: center; }
+@media (max-width: 700px) {
+    .demo25 .now { background-color: #ffe3e3; }
+    .demo25 .now::after { content: "📱 좁은 화면 (700px 이하)"; }
+    .demo25 .cols { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 420px) {
+    .demo25 .cols { grid-template-columns: 1fr; }
+}
+
+/* ===== 20번 box-sizing 데모 ===== */
+.demo30 .a, .demo30 .b { width: 200px; padding: 20px; border: 5px solid #e8590c; margin-bottom: 8px; background-color: #fff4e6; font-size: 12px; }
+.demo30 .a { box-sizing: content-box; }
+.demo30 .b { box-sizing: border-box; }
+
+/* ===== 21번 rem / em 데모 ===== */
+.demo31 .r1 { font-size: 1rem; }
+.demo31 .r2 { font-size: 1.5rem; }
+.demo31 .r3 { font-size: 2rem; }
+
+/* ===== 22번 overflow 데모 ===== */
+.demo32 .box { width: 150px; height: 60px; border: 1px solid #999; margin-bottom: 8px; font-size: 13px; }
+.demo32 .h { overflow: hidden; }
+.demo32 .a { overflow: auto; }
+.demo32 .ellipsis { height: auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ===== 23번 시각 효과 데모 ===== */
+.demo33 .fx { display: inline-block; margin: 14px; padding: 10px 14px; background-color: #e7f5ff; border: 1px solid #4dabf7; transition: all 0.3s; }
+.demo33 .shadow { box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3); }
+.demo33 .faded { opacity: 0.4; }
+.demo33 .pointer { cursor: pointer; }
+.demo33 .rotate { transform: rotate(10deg); }
+.demo33 .scale { transform: scale(1.2); }
+.demo33 .move { transform: translateX(20px); }
+
+/* ===== 24번 animation 데모 ===== */
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.6); }
+}
+.demo34 .pulsing { display: inline-block; font-size: 28px; color: #e8590c; animation: pulse 1s ease-in-out infinite alternate; }
+
+/* ===== 25번 상속 데모 ===== */
+.demo35 .parent { color: red; border: 2px solid; padding: 6px; }
+
+/* ===== 26번 선택자 심화 데모 ===== */
+.demo36 li:nth-child(even) { background-color: #fff3bf; }
+
+/* ===== 11번 visibility 데모 ===== */
+.demo22 .box { display: inline-block; width: 60px; height: 40px; background-color: #ffd8a8; text-align: center; line-height: 40px; }
+.demo22 .hidden { visibility: hidden; }
+.demo22 .gone { display: none; }

@@ -1,0 +1,6 @@
+/* CSS_study.html 5번 데모용 : <link> 로 연결된 외부 스타일 (가장 약한 층) */
+.pr .a,
+.pr .b,
+.pr .c {
+    color: green;
+}
