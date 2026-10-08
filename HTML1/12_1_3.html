@@ -1,0 +1,15 @@
+<script>
+    function numbering(n) {
+        for (let i = 1; i <= n; i++) {
+            console.log(i)
+        }
+    }
+    function red() {
+        let button = document.querySelector("input[type='button'][value='click1']")
+        button.style.backgroundColor = "red"
+    }
+</script>
+<input type="button" value="click" onClick="numbering(5)"/>
+<br/>
+<p onclick="alert('안녕하세요')">눌러봐요</p>
+<input type="button" value="click1" onClick="red()" />

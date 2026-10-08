@@ -102,6 +102,42 @@ th { background-color: #f5f5f5; }
     border: 1px solid #999;
 }
 
+/* ===== 이벤트 실습 데모 (12 ~ 13번) ===== */
+.ev-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+.ev-out {
+    margin-top: 4px;
+    padding: 4px 8px;
+    background-color: #fff9db;
+    border: 1px dashed #f08c00;
+    border-radius: 4px;
+    min-height: 1.4em;
+    font-size: 14px;
+    word-break: break-all;
+}
+.hover-box {
+    padding: 24px 10px;
+    text-align: center;
+    border: 2px solid #f08c00;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+.click-area {
+    padding: 30px 10px;
+    text-align: center;
+    background-color: #e7f5ff;
+    border: 2px dashed #4dabf7;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.ev-grid input[type="text"], .ev-grid select { width: 100%; box-sizing: border-box; padding: 4px; }
+@media (max-width: 600px) {
+    .ev-grid { grid-template-columns: 1fr; }
+}
+
 /* ===== 좋아요 버튼 (DOM 맛보기 데모) ===== */
 .like-box {
     border: 1px dashed #999;

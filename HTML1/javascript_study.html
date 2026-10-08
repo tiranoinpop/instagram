@@ -397,11 +397,336 @@ console.log(JSON.stringify(user))</code></pre>
         </div>
 
         <!-- ============================================================ -->
-        <h2>12. 맛보기 : JavaScript로 HTML을 움직이기 (DOM과 이벤트)</h2>
+        <h2>12. &lt;script&gt;로 JavaScript 넣기 : 스스로 작동 (사용자 상호작용 없음)</h2>
         <p>
-            지금까지는 콘솔에서 계산만 했다. JavaScript의 진짜 용도는 <strong>HTML 요소를 찾아서 바꾸는 것</strong>이다.
-            인스타 클론의 좋아요 버튼을 만들기 위한 기본 형태를 먼저 본다. (앞으로 배울 내용)
+            브라우저는 HTML을 <strong>위에서 아래로 읽다가 <code>&lt;script&gt;</code>를 만나면 그 자리에서 JavaScript를 실행</strong>한다.
+            사용자가 아무것도 누르지 않아도 <span class="key">페이지가 열리면 저절로 한 번 실행</span>된다.
         </p>
+
+        <h3>12-1. 페이지가 열릴 때 스스로 HTML을 채우기</h3>
+        <pre><code>&lt;p id="todayDemo"&gt;&lt;/p&gt;                  &lt;!-- 비어 있는 p --&gt;
+
+&lt;script&gt;
+    const today = new Date()                 // 지금 날짜와 시간
+    const p = document.getElementById("todayDemo")
+    p.textContent = "오늘은 " + today.toLocaleDateString("ko-KR") + " 입니다"
+&lt;/script&gt;</code></pre>
+        <div class="like-box">
+            <p id="todayDemo" style="margin: 0;"></p>
+        </div>
+        <p class="tip">HTML에는 빈 <code>&lt;p&gt;</code>만 있는데, 페이지가 열리자마자 JavaScript가 날짜를 채워 넣었다. 새로고침할 때마다 <strong>코드가 다시 실행</strong>된다.</p>
+
+        <h3>12-2. document.write : 그 자리에 바로 출력 (옛 방식)</h3>
+        <pre><code>&lt;script&gt;
+    document.write("&lt;b&gt;document.write 로 출력한 글자&lt;/b&gt;")
+&lt;/script&gt;</code></pre>
+        <div class="like-box">
+            <script>document.write("<b>document.write 로 출력한 글자</b> ← script 태그가 있던 바로 그 자리에 들어갔다")</script>
+        </div>
+        <p class="tip">
+            <code>&lt;script&gt;</code>가 있는 <strong>위치에 HTML을 끼워 넣는다.</strong> 옛 교재 / 옛 코드에 자주 나온다.<br/>
+            단, <strong>페이지 로딩이 끝난 뒤에 호출하면 페이지 전체가 지워진다.</strong> 그래서 요즘은 거의 쓰지 않고, 12-1처럼 <code>textContent</code>로 요소를 바꾸는 방식을 쓴다.
+        </p>
+
+        <h3>12-3. 출력 방법 비교</h3>
+        <table>
+            <tr><th>방법</th><th>출력 위치</th><th>특징</th></tr>
+            <tr><td><code>console.log(값)</code></td><td>개발자 도구 콘솔</td><td>개발자용. 사용자에게는 안 보임. <strong>디버깅의 기본</strong></td></tr>
+            <tr><td><code>alert("메시지")</code></td><td>팝업창</td><td>확인을 누를 때까지 <strong>모든 동작이 멈춤</strong>. 간단한 테스트용</td></tr>
+            <tr><td><code>document.write(HTML)</code></td><td>script 태그 위치</td><td>옛 방식. 로딩 후 쓰면 페이지가 지워짐</td></tr>
+            <tr><td><code>요소.textContent = 값</code></td><td>그 요소 안</td><td><strong>정석.</strong> 원하는 요소를 골라서 바꿈</td></tr>
+        </table>
+
+        <h3>12-4. 외부 파일로 분리하기 + 실행 시점</h3>
+        <pre><code>&lt;!-- CSS 의 link 처럼, JS 도 파일로 분리해서 연결 --&gt;
+&lt;script src="./js/main.js"&gt;&lt;/script&gt;
+
+&lt;!-- head 에 둘 때는 defer : HTML 을 다 읽은 뒤에 실행해 달라는 표시 --&gt;
+&lt;script src="./js/main.js" defer&gt;&lt;/script&gt;</code></pre>
+        <p>
+            <strong>실행 시점이 중요한 이유</strong> : 브라우저는 위에서부터 읽기 때문에, <code>&lt;script&gt;</code>가 대상 요소보다 <strong>위에</strong> 있으면 그 요소가 아직 없어서 찾지 못한다.
+            (그래서 보통 <code>&lt;body&gt;</code> 맨 끝에 두거나 <code>defer</code>를 쓴다)
+        </p>
+        <div class="demo-js">
+            <div class="bar"><span>JavaScript</span><button class="run-btn">▶ 다시 실행</button></div>
+            <pre><code>// 없는 요소(또는 아직 안 만들어진 요소)를 찾으면 null 이 나온다
+const el = document.getElementById("없는-id")
+console.log(el)
+
+// null 에 대고 속성을 쓰려고 하면 에러 → 가장 흔한 에러 중 하나
+try {
+    el.textContent = "안녕"
+} catch (e) {
+    console.log(e.name + ": " + e.message)
+}</code></pre>
+            <div class="out"></div>
+        </div>
+        <div class="note">
+            <strong>에러 메시지 읽는 법</strong> : <code>Cannot set properties of null</code> / <code>Cannot read properties of null</code>이 보이면
+            "요소를 못 찾았다"는 뜻이다. <strong>id 오타</strong>이거나 <strong>script 위치가 요소보다 위</strong>인지 먼저 확인한다.
+        </div>
+
+        <!-- ============================================================ -->
+        <h2>13. 이벤트 핸들러 : 사용자와 상호작용</h2>
+        <p>
+            12번은 페이지가 열리면 <strong>혼자 실행</strong>됐다. 이번에는 <span class="key">사용자가 무언가 했을 때</span> 실행되는 코드다.
+        </p>
+        <table>
+            <tr><th>용어</th><th>의미</th><th>예</th></tr>
+            <tr><td><strong>이벤트</strong> (event)</td><td>브라우저에서 일어나는 사건</td><td>클릭, 마우스 올림, 키 입력, 글자 입력, 제출 ...</td></tr>
+            <tr><td><strong>이벤트 핸들러</strong> (리스너)</td><td>이벤트가 일어났을 때 <strong>대신 실행되는 함수</strong></td><td>"클릭되면 좋아요 숫자를 올려라"</td></tr>
+        </table>
+        <table>
+            <tr><th></th><th>12번 : 스스로 작동</th><th>13번 : 이벤트 핸들러</th></tr>
+            <tr><td>실행 시점</td><td>페이지가 열릴 때 <strong>한 번</strong></td><td>이벤트가 일어날 때마다 <strong>여러 번</strong></td></tr>
+            <tr><td>코드 형태</td><td>그냥 코드를 적음</td><td><strong>함수</strong>를 만들어서 이벤트에 <strong>등록</strong>해 둠</td></tr>
+            <tr><td>비유</td><td>식당 문을 열자마자 청소</td><td>손님이 벨을 누르면 주문을 받으러 감</td></tr>
+        </table>
+        <p class="tip">흐름 : <strong>사용자 동작 → 이벤트 발생 → 등록해 둔 핸들러 실행 → HTML / CSS 변경 (DOM 조작)</strong></p>
+
+        <h3>13-1. 방법 1 : HTML 속성으로 (on이벤트명 = "코드")</h3>
+        <pre><code>&lt;!-- 속성 안에 코드를 직접 --&gt;
+&lt;button onclick="this.textContent = '눌렸어요!'"&gt;눌러보세요&lt;/button&gt;
+
+&lt;!-- 미리 만든 함수를 호출 --&gt;
+&lt;button onclick="sayHi()"&gt;sayHi 함수 호출&lt;/button&gt;
+
+&lt;script&gt;
+    function sayHi() {
+        console.log("안녕하세요")
+    }
+&lt;/script&gt;</code></pre>
+        <div class="like-box">
+            <button onclick="this.textContent = '눌렸어요!'">눌러보세요</button>
+            <button onclick="sayHi()">sayHi 함수 호출</button>
+            <span id="sayHiOut"></span>
+        </div>
+        <p class="tip"><code>this</code> = 이벤트가 일어난 <strong>그 요소 자신</strong>이다. 간단하지만 HTML과 JS가 뒤섞여서 커지면 관리가 어렵다. (옛 코드, AI가 만든 짧은 예제에서 자주 보임)</p>
+
+        <h3>13-2. 방법 2 : JS에서 요소의 속성에 대입 (요소.onclick = 함수)</h3>
+        <pre><code>const btnProp = document.getElementById("btnProp")
+
+btnProp.onclick = function () {
+    console.log("첫 번째 핸들러")
+}
+btnProp.onclick = function () {                 // 같은 곳에 또 대입하면 덮어쓴다!
+    console.log("두 번째 핸들러")
+}</code></pre>
+        <div class="like-box">
+            <button id="btnProp">클릭 (onclick 을 두 번 대입함)</button>
+            <span id="btnPropOut"></span>
+        </div>
+        <p class="tip">HTML과 JS가 분리되어 깔끔하지만, 한 이벤트에 <strong>핸들러를 하나만</strong> 둘 수 있다. 나중에 대입한 것이 앞의 것을 덮어쓴다.</p>
+
+        <h3>13-3. 방법 3 : addEventListener (가장 권장)</h3>
+        <pre><code>const btnAdd = document.getElementById("btnAdd")
+
+btnAdd.addEventListener("click", function () {   // 핸들러 A
+    console.log("핸들러 A 실행")
+})
+btnAdd.addEventListener("click", () =&gt; {         // 핸들러 B : 화살표 함수도 가능
+    console.log("핸들러 B 실행")
+})</code></pre>
+        <div class="like-box">
+            <button id="btnAdd">클릭 (핸들러 2개 등록)</button>
+            <span id="btnAddOut"></span>
+        </div>
+        <table>
+            <tr><th>방법</th><th>이벤트 모델 이름 (교재)</th><th>코드</th><th>핸들러 개수</th><th>평가</th></tr>
+            <tr><td>1. HTML 속성</td><td><strong>인라인</strong> 이벤트 모델</td><td><code>&lt;button onclick="..."&gt;</code></td><td>하나</td><td>간단하지만 HTML과 JS가 섞임</td></tr>
+            <tr><td>2. 요소 속성 대입</td><td><strong>고전</strong> 이벤트 모델</td><td><code>btn.onclick = 함수</code></td><td>하나 (덮어씀)</td><td>분리는 되지만 덮어쓰기 주의</td></tr>
+            <tr><td>3. addEventListener</td><td><strong>표준</strong> 이벤트 모델</td><td><code>btn.addEventListener("click", 함수)</code></td><td><strong>여러 개 가능</strong></td><td><strong>권장.</strong> 현대 코드는 대부분 이 방식</td></tr>
+        </table>
+        <p class="tip"><strong>이벤트 모델</strong> = 이벤트를 처리하는 방법. 위 세 가지를 교재에서는 <strong>인라인 → 고전 → 표준</strong> 이벤트 모델이라고 부른다. (12_2_5.html 맨 아래 주석의 정리)</p>
+
+        <h3>13-4. 이벤트 종류와 직접 확인해보기</h3>
+        <table>
+            <tr><th>이벤트</th><th>일어나는 때</th><th>아래 실습</th></tr>
+            <tr><td><code>click</code></td><td>클릭했을 때</td><td>13-1 ~ 13-3</td></tr>
+            <tr><td><code>mouseover</code> / <code>mouseout</code></td><td>마우스가 올라왔을 때 / 벗어났을 때</td><td>색이 바뀌는 상자</td></tr>
+            <tr><td><code>input</code></td><td>입력창의 내용이 바뀔 때마다 (글자 하나 칠 때마다)</td><td>글자 수 세기</td></tr>
+            <tr><td><code>keydown</code></td><td>키를 눌렀을 때</td><td>누른 키 이름</td></tr>
+            <tr><td><code>change</code></td><td>선택 / 입력이 확정되었을 때 (select 등)</td><td>선택 목록</td></tr>
+            <tr><td><code>submit</code></td><td>form을 제출할 때</td><td>제출 막기</td></tr>
+            <tr><td><code>DOMContentLoaded</code> / <code>load</code></td><td>HTML(또는 모든 리소스)이 다 로드됐을 때</td><td>-</td></tr>
+        </table>
+        <pre><code>// mouseover / mouseout : 마우스를 올렸다 뗐다
+hoverBox.addEventListener("mouseover", () =&gt; { hoverBox.style.backgroundColor = "gold" })
+hoverBox.addEventListener("mouseout",  () =&gt; { hoverBox.style.backgroundColor = "" })
+
+// input : 입력할 때마다. input.value 로 현재 입력된 글자를 읽는다
+echoInput.addEventListener("input", () =&gt; {
+    echoOut.textContent = echoInput.value.length + "글자 : " + echoInput.value
+})
+
+// keydown : 어떤 키를 눌렀는지는 event 객체(e)의 key 에 들어 있다
+keyInput.addEventListener("keydown", (e) =&gt; { keyOut.textContent = "누른 키 : " + e.key })
+
+// change : select 에서 다른 항목을 골랐을 때
+fruitSelect.addEventListener("change", () =&gt; { fruitOut.textContent = "선택 : " + fruitSelect.value })
+
+// submit : form 제출. 기본 동작(페이지 새로고침 / 이동)을 막으려면 e.preventDefault()
+demoForm.addEventListener("submit", (e) =&gt; {
+    e.preventDefault()
+    formOut.textContent = "제출된 이름 : " + nameInput.value
+})</code></pre>
+        <div class="like-box ev-grid">
+            <div id="hoverBox" class="hover-box">마우스를 올려보세요</div>
+            <div>
+                <input id="echoInput" type="text" placeholder="입력해 보세요 (input)"/>
+                <div class="ev-out" id="echoOut">-</div>
+            </div>
+            <div>
+                <input id="keyInput" type="text" placeholder="여기서 키를 눌러보세요 (keydown)"/>
+                <div class="ev-out" id="keyOut">-</div>
+            </div>
+            <div>
+                <select id="fruitSelect">
+                    <option value="">과일을 고르세요 (change)</option>
+                    <option value="사과">사과</option>
+                    <option value="배">배</option>
+                    <option value="귤">귤</option>
+                </select>
+                <div class="ev-out" id="fruitOut">-</div>
+            </div>
+            <form id="demoForm">
+                <input id="nameInput" type="text" placeholder="이름 입력 후 Enter (submit)"/>
+                <button type="submit">제출</button>
+                <div class="ev-out" id="formOut">-</div>
+            </form>
+        </div>
+
+        <h3>13-5. 이벤트 객체 (event, 보통 e 라고 씀)</h3>
+        <p>핸들러 함수는 <strong>이벤트에 대한 정보가 담긴 객체</strong>를 첫 번째 인자로 자동으로 받는다.</p>
+        <pre><code>clickArea.addEventListener("click", (e) =&gt; {
+    areaOut.textContent =
+        "종류 : " + e.type +                                   // click
+        " / 눌린 요소 id : " + e.target.id +                   // 실제로 눌린 요소
+        " / 영역 안 좌표 : (" + e.offsetX + ", " + e.offsetY + ")"
+})</code></pre>
+        <div class="like-box">
+            <div id="clickArea" class="click-area">이 영역 안을 아무 데나 클릭해 보세요</div>
+            <div class="ev-out" id="areaOut">-</div>
+        </div>
+        <table>
+            <tr><th>e의 속성</th><th>의미</th></tr>
+            <tr><td><code>e.type</code></td><td>이벤트 종류 (<code>"click"</code> 등)</td></tr>
+            <tr><td><code>e.target</code></td><td>이벤트가 실제로 일어난 요소</td></tr>
+            <tr><td><code>e.target.value</code></td><td>(입력창) 지금 입력된 글자. <code>input</code> 이벤트에서 자주 씀 (12_2_5.html) &mdash; 요소 변수 대신 <code>e.target</code>으로 접근</td></tr>
+            <tr><td><code>e.key</code></td><td>(키보드 이벤트) 누른 키 이름</td></tr>
+            <tr><td><code>e.offsetX / offsetY</code></td><td>(마우스 이벤트) 요소 안에서의 좌표</td></tr>
+            <tr><td><code>e.preventDefault()</code></td><td>브라우저의 기본 동작을 막기 (form 제출, 링크 이동 등)</td></tr>
+        </table>
+
+        <h3>13-6. 함수에 값(인자) 넘기기 + 스타일 바꾸기 (12_1_3.html)</h3>
+        <p>인라인 이벤트 모델에서도 <strong>함수를 호출하면서 값을 넘길 수 있다.</strong> 같은 함수를 값만 바꿔 재사용할 수 있다.</p>
+        <div class="demo-js">
+            <div class="bar"><span>JavaScript (12_1_3.html 의 numbering 함수)</span><button class="run-btn">▶ 다시 실행</button></div>
+            <pre><code>function numbering(n) {
+    for (let i = 1; i &lt;= n; i++) {
+        console.log(i)
+    }
+}
+
+numbering(5)        // 버튼의 onClick="numbering(5)" 가 하는 일
+numbering(2)         // 다른 값을 넘기면 다르게 동작</code></pre>
+            <div class="out"></div>
+        </div>
+        <p class="tip">실제 12_1_3.html 에서는 <code>&lt;input type="button" value="click" onClick="numbering(5)"/&gt;</code>를 누르면 <strong>F12 콘솔</strong>에 1~5가 찍힌다. (화면에는 안 보이고 콘솔에만 출력)</p>
+
+        <pre><code>function red() {
+    let button = document.querySelector("input[type='button'][value='click1']")
+    button.style.backgroundColor = "red"          // 스타일 바꾸기
+}
+
+&lt;input type="button" value="click1" onClick="red()" /&gt;</code></pre>
+        <div class="like-box">
+            <input type="button" value="click1" onclick="redDemo()"/>
+            <input type="button" value="되돌리기" onclick="resetDemo()"/> ← click1 을 눌러 보세요 (위 코드가 실제로 동작 중)
+        </div>
+        <table>
+            <tr><th>CSS (3번, 7번)</th><th>JavaScript (요소.style.속성)</th></tr>
+            <tr><td><code>background-color: red;</code></td><td><code>el.style.backgroundColor = "red"</code></td></tr>
+            <tr><td><code>font-size: 20px;</code></td><td><code>el.style.fontSize = "20px"</code></td></tr>
+            <tr><td><code>border-radius: 8px;</code></td><td><code>el.style.borderRadius = "8px"</code></td></tr>
+        </table>
+        <p class="tip">CSS의 <code>-</code>가 들어간 속성 이름은 JS에서는 <strong>camelCase</strong>(하이픈을 없애고 뒷 단어를 대문자로)로 쓴다. 값은 <strong>항상 문자열</strong>이고 단위도 붙여야 한다 (<code>"20px"</code>).</p>
+
+        <div class="demo-js">
+            <div class="bar"><span>JavaScript</span><button class="run-btn">▶ 다시 실행</button></div>
+            <pre><code>const box = document.createElement("div")      // 연습용으로 만든 요소 (화면에는 안 붙임)
+box.style.backgroundColor = "red"              // CSS 의 background-color
+box.style.fontSize = "20px"                    // CSS 의 font-size
+console.log(box.style.backgroundColor)
+console.log(box.style.cssText)                 // CSS 로 변환된 모습 : 하이픈 형태로 돌아감</code></pre>
+            <div class="out"></div>
+        </div>
+
+        <div class="note">
+            <strong>자주 하는 실수</strong><br/>
+            1. <code>btn.addEventListener("click", sayHi<strong>()</strong>)</code> : <strong>괄호를 붙이면 지금 바로 호출</strong>되고, 그 결과가 핸들러로 등록되어 버린다. 함수 <strong>자체</strong>를 넘겨야 한다 : <code>addEventListener("click", sayHi)</code><br/>
+            2. 이벤트 이름에는 <code>on</code>을 붙이지 않는다 : <code>addEventListener("click", ...)</code> (O) / <code>"onclick"</code> (X). <code>on</code>이 붙는 것은 방법 1, 2의 속성 이름이다.<br/>
+            3. script가 요소보다 위에 있어서 <code>null</code>을 얻는 경우 (12-4)<br/>
+            4. 입력창의 <code>value</code>는 항상 <strong>문자열</strong>이다. 계산하려면 <code>Number(input.value)</code> (5번)<br/>
+            5. HTML 주석은 <code>--&gt;</code>로 닫아야 한다. <code>&lt;!-- ... &gt;</code>처럼 <code>&gt;</code>만 쓰면 주석이 안 닫혀서 <strong>그 뒤의 모든 내용이 주석</strong>이 된다. (12_2_5.html 맨 아래 주석)<br/>
+            6. 속성 이름 <code>onClick</code> / <code>onclick</code> : HTML은 대소문자를 구분하지 않아 둘 다 동작하지만, <strong>소문자 <code>onclick</code></strong>으로 쓰는 것이 관례다. (JS의 <code>btn.onclick</code>은 반드시 소문자)<br/>
+            7. <code>&lt;script&gt;</code>를 <code>&lt;/body&gt;</code> 뒤에 쓰면 브라우저가 알아서 body 안으로 옮겨줘서 동작은 하지만 올바른 HTML은 아니다. <strong>&lt;/body&gt; 바로 앞</strong>에 둔다.
+        </div>
+
+        <!-- ============================================================ -->
+        <h2>14. DOM 조작 : JavaScript로 HTML 요소 바꾸기</h2>
+        <p>
+            12번에서 <code>getElementById</code>, <code>textContent</code>를, 13번에서 <code>addEventListener</code>를 이미 썼다.
+            이것들을 합쳐서 인스타 클론의 <strong>좋아요 버튼</strong>을 만드는 기본 형태를 정리한다.
+        </p>
+
+        <h3>14-1. HTML 요소 찾기 : getElementById 와 querySelector (12_1_3, 12_2_5)</h3>
+        <p>
+            <code>document.querySelector("선택자")</code>는 <span class="key">CSS 선택자(3번, 26번)를 그대로</span> 써서 요소를 찾는다.
+            <code>getElementById</code>보다 훨씬 다양하게 찾을 수 있어서 요즘 가장 많이 쓴다.
+        </p>
+        <table>
+            <tr><th>메서드</th><th>찾는 것</th><th>못 찾으면</th></tr>
+            <tr><td><code>getElementById("id")</code></td><td>id가 같은 요소 하나 (선택자 아님, <code>#</code> 안 붙임)</td><td><code>null</code></td></tr>
+            <tr><td><code>querySelector("선택자")</code></td><td>선택자에 맞는 <strong>첫 번째</strong> 요소 하나</td><td><code>null</code></td></tr>
+            <tr><td><code>querySelectorAll("선택자")</code></td><td>맞는 <strong>모든</strong> 요소 (목록)</td><td>빈 목록 (길이 0)</td></tr>
+        </table>
+        <div class="demo-js">
+            <div class="bar"><span>JavaScript (이 페이지에서 실제로 찾아봅니다)</span><button class="run-btn">▶ 다시 실행</button></div>
+            <pre><code>console.log(document.querySelector("h1").textContent)           // 태그 선택자
+console.log(document.querySelector("#likeBtn").id)             // id 선택자 (# 를 붙임!)
+console.log(document.querySelector(".like-box") !== null)      // class 선택자 (. 를 붙임!)
+console.log(document.querySelector("input[type='text']").id)   // 속성 선택자 : 첫 번째 text 입력창
+console.log(document.querySelector("#없는id"))                  // 못 찾으면 null
+console.log(document.querySelectorAll(".demo-js").length)      // 코드 실행 상자의 개수
+console.log(document.querySelectorAll("#없는id").length)        // 못 찾아도 에러가 아니라 길이 0</code></pre>
+            <div class="out"></div>
+        </div>
+        <pre><code>// 12_1_3.html : 속성 선택자 두 개를 연결해서 정확히 그 버튼만 찾기
+document.querySelector("input[type='button'][value='click1']")
+
+// 12_2_5.html : 입력창 찾기
+document.querySelector("input[type='text']")</code></pre>
+        <p class="tip">변수에 담을 때는 <strong>무엇인지 알 수 있는 이름</strong>을 쓴다. 12_2_5.html 에서 텍스트 입력창을 <code>button2</code>로 이름 지었는데, 이러면 읽을 때 헷갈린다 → <code>textInput</code>처럼 쓴다. 바뀌지 않는 값이므로 <code>let</code> 대신 <code>const</code>를 쓰는 것이 관례다.</p>
+
+        <h3>14-2. 요소 + 이벤트 합치기 (12_2_5.html)</h3>
+        <pre><code>const button = document.querySelector("input[type='button'][value='버튼']")
+button.addEventListener("click", function (e) {
+    alert("버튼이 클릭되었습니다")                  // 팝업
+})
+
+const textInput = document.querySelector("input[type='text']")
+textInput.addEventListener("input", function (e) {
+    console.log(e.target.value)                  // 입력할 때마다 현재 입력값을 출력
+})</code></pre>
+        <div class="like-box">
+            <input type="button" value="버튼"/>
+            <input type="text" placeholder="텍스트를 입력하세요"/>
+            <div class="ev-out" id="demo125Out">-</div>
+        </div>
+        <p class="tip">직접 눌러 보고 입력해 보세요. (이 페이지의 실습은 콘솔 대신 아래 상자에 입력값을 표시하도록 약간 바꿨다. 원본의 <code>console.log</code>는 F12 콘솔에 나온다.)</p>
+
+        <h3>14-3. 좋아요 버튼 만들기</h3>
         <pre><code>&lt;button id="likeBtn"&gt;🤍 좋아요 0&lt;/button&gt;
 
 &lt;script&gt;
@@ -428,7 +753,7 @@ console.log(JSON.stringify(user))</code></pre>
         <p class="tip">HTML (구조) + CSS (모양) + JS (동작)이 합쳐지는 지점이다. 위 버튼의 색 변화는 <code>.liked</code> CSS 클래스를 JS가 붙여서 만든 것이다.</p>
 
         <!-- ============================================================ -->
-        <h2>13. C / C++ 에서 온 사람을 위한 비교 정리</h2>
+        <h2>15. C / C++ 에서 온 사람을 위한 비교 정리</h2>
         <table>
             <tr><th>항목</th><th>C / C++</th><th>JavaScript</th></tr>
             <tr><td>변수 선언</td><td><code>int a = 1;</code> (타입 필수)</td><td><code>let a = 1</code> (타입 없음, 나중에 바뀔 수 있음)</td></tr>
@@ -445,10 +770,10 @@ console.log(JSON.stringify(user))</code></pre>
         </table>
 
         <!-- ============================================================ -->
-        <h2>14. 다음에 배울 것 / AI와 코딩할 때 알아둘 것</h2>
+        <h2>16. 다음에 배울 것 / AI와 코딩할 때 알아둘 것</h2>
         <table>
             <tr><th>주제</th><th>설명</th></tr>
-            <tr><td>DOM 조작 / 이벤트 심화</td><td>요소 여러 개 선택(<code>querySelectorAll</code>), 요소 만들기 / 지우기, 입력창 값 읽기(<code>input.value</code>)</td></tr>
+            <tr><td>DOM 조작 / 이벤트 심화</td><td>요소 여러 개 선택(<code>querySelectorAll</code>), 요소 만들기 / 지우기(<code>createElement</code>, <code>remove</code>), 이벤트 위임(부모에서 자식 클릭 처리), <code>classList.toggle</code></td></tr>
             <tr><td>배열 / 객체 메서드</td><td><code>map</code>, <code>filter</code>, <code>find</code>, <code>reduce</code>, <code>forEach</code>, 구조 분해(<code>const { name } = user</code>), 전개 연산자(<code>...</code>)</td></tr>
             <tr><td>비동기 처리</td><td><code>setTimeout</code>, <code>Promise</code>, <code>async / await</code>, <code>fetch</code>(서버에 데이터 요청). AI 코드에 매우 자주 나온다</td></tr>
             <tr><td>저장</td><td><code>localStorage</code> : 브라우저에 데이터 저장 (좋아요 상태 유지 등)</td></tr>
@@ -531,6 +856,92 @@ console.log(typeof (a + b))</textarea>
                 likes++
                 btn.textContent = "❤️ 좋아요 " + likes
                 btn.classList.add("liked")
+            })
+
+            // ===== 12-1 : 페이지가 열릴 때 스스로 실행 =====
+            const todayEl = document.getElementById("todayDemo")
+            todayEl.textContent = "오늘은 " + new Date().toLocaleDateString("ko-KR") + " 입니다"
+
+            // ===== 13-1 : HTML 속성(onclick="sayHi()")에서 호출하는 함수 =====
+            function sayHi() {
+                document.getElementById("sayHiOut").textContent =
+                    " sayHi() 가 실행됐어요 (" + new Date().toLocaleTimeString("ko-KR") + ")"
+            }
+
+            // ===== 13-2 : onclick 속성에 두 번 대입 → 마지막 것만 남음 =====
+            const btnProp = document.getElementById("btnProp")
+            const btnPropOut = document.getElementById("btnPropOut")
+            btnProp.onclick = function () {
+                btnPropOut.textContent = " 첫 번째 핸들러"
+            }
+            btnProp.onclick = function () {
+                btnPropOut.textContent = " 두 번째 핸들러만 실행됨 (첫 번째는 덮어써져서 사라짐)"
+            }
+
+            // ===== 13-3 : addEventListener → 둘 다 실행 =====
+            const btnAdd = document.getElementById("btnAdd")
+            const btnAddOut = document.getElementById("btnAddOut")
+            btnAdd.addEventListener("click", function () {
+                btnAddOut.textContent = " 핸들러 A 실행 →"
+            })
+            btnAdd.addEventListener("click", () => {
+                btnAddOut.textContent += " 핸들러 B 실행"
+            })
+
+            // ===== 13-4 : 여러 이벤트 =====
+            const hoverBox = document.getElementById("hoverBox")
+            hoverBox.addEventListener("mouseover", () => { hoverBox.style.backgroundColor = "gold" })
+            hoverBox.addEventListener("mouseout", () => { hoverBox.style.backgroundColor = "" })
+
+            const echoInput = document.getElementById("echoInput")
+            const echoOut = document.getElementById("echoOut")
+            echoInput.addEventListener("input", () => {
+                echoOut.textContent = echoInput.value.length + "글자 : " + echoInput.value
+            })
+
+            const keyInput = document.getElementById("keyInput")
+            const keyOut = document.getElementById("keyOut")
+            keyInput.addEventListener("keydown", (e) => { keyOut.textContent = "누른 키 : " + e.key })
+
+            const fruitSelect = document.getElementById("fruitSelect")
+            const fruitOut = document.getElementById("fruitOut")
+            fruitSelect.addEventListener("change", () => { fruitOut.textContent = "선택 : " + fruitSelect.value })
+
+            const demoForm = document.getElementById("demoForm")
+            const nameInput = document.getElementById("nameInput")
+            const formOut = document.getElementById("formOut")
+            demoForm.addEventListener("submit", (e) => {
+                e.preventDefault()                       // 페이지가 새로고침되는 기본 동작을 막음
+                formOut.textContent = "제출된 이름 : " + nameInput.value
+            })
+
+            // ===== 13-5 : 이벤트 객체 =====
+            const clickArea = document.getElementById("clickArea")
+            const areaOut = document.getElementById("areaOut")
+            clickArea.addEventListener("click", (e) => {
+                areaOut.textContent =
+                    "종류 : " + e.type +
+                    " / 눌린 요소 id : " + e.target.id +
+                    " / 영역 안 좌표 : (" + e.offsetX + ", " + e.offsetY + ")"
+            })
+
+            // ===== 13-6 : 12_1_3.html 의 red() — 속성 선택자로 버튼을 찾아 스타일 바꾸기 =====
+            function redDemo() {
+                const target = document.querySelector("input[type='button'][value='click1']")
+                target.style.backgroundColor = "red"
+            }
+            function resetDemo() {
+                document.querySelector("input[type='button'][value='click1']").style.backgroundColor = ""
+            }
+
+            // ===== 14-2 : 12_2_5.html — querySelector + addEventListener =====
+            const demoBtn = document.querySelector("input[type='button'][value='버튼']")
+            demoBtn.addEventListener("click", function (e) {
+                alert("버튼이 클릭되었습니다")
+            })
+            const demoText = document.querySelector("input[type='text'][placeholder='텍스트를 입력하세요']")
+            demoText.addEventListener("input", function (e) {
+                document.getElementById("demo125Out").textContent = e.target.value      // 원본은 console.log(e.target.value)
             })
         </script>
     </body>

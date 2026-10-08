@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" value="버튼" />
+    <input type="text" placeholder="텍스트를 입력하세요" />
+</body>
+<script>
+    let button = document.querySelector("input[type='button'][value='버튼']")
+    button.addEventListener("click", 
+        function(e) {
+            alert("버튼이 클릭되었습니다")
+        }
+    )
+
+    let button2 = document.querySelector("input[type='text']")
+    button2.addEventListener("input", 
+        function(e) {
+            console.log(e.target.value)
+        }
+    )
+</script>
+</html>
+<!-- 이벤트 모델 : 이벤트를 처리하는 방법
+    1. 인라인 이벤트 모델 : HTML 태그 안에 onClick 속성으로 이벤트 처리
+    2. 고전 이벤트 모델 : 자바스크립트에서 DOM 객체의 속성으로 이벤트 처리
+    3. 표준 이벤트 모델 : addEventListener() 메서드로 이벤트 처리>
