@@ -5,6 +5,7 @@
         }
     }
     function red() {
+        // 문서를 제어하기 위한 것 (document 객체)
         let button = document.querySelector("input[type='button'][value='click1']")
         button.style.backgroundColor = "red"
     }
@@ -13,3 +14,5 @@
 <br/>
 <p onclick="alert('안녕하세요')">눌러봐요</p>
 <input type="button" value="click1" onClick="red()" />
+<!-- 인라인 이벤트 모델은 가성비가 좋지만 HTML 이 정보의 뼈대만이 아니라 기능도 포함하게되어버린다 -->
+ 

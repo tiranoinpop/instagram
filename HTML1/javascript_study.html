@@ -379,6 +379,30 @@ console.log(greet("인수"))</code></pre>
             <div class="out"></div>
         </div>
 
+        <h3>10-1. 변수의 범위 (scope) : 어디서 보이는가</h3>
+        <div class="demo-js">
+            <div class="bar"><span>JavaScript</span><button class="run-btn">▶ 다시 실행</button></div>
+            <pre><code>let button = "바깥 변수"
+
+function test() {
+    let button = "함수 안의 변수"     // 같은 이름이지만 별개의 변수 (바깥 것을 가림 = shadowing)
+    console.log(button)
+}
+test()
+console.log(button)                 // 함수 안에서 바꿔도 바깥은 그대로
+
+if (true) {
+    let x = 1                       // let / const 는 { } 블록 안에서만 보임 (C / C++ 과 같음)
+}
+try {
+    console.log(x)
+} catch (e) {
+    console.log(e.name + ": " + e.message)
+}</code></pre>
+            <div class="out"></div>
+        </div>
+        <p class="tip">12_3_1.js 에서 파일 위쪽의 <code>let button</code>과 DOMContentLoaded 함수 안의 <code>let button</code>은 이름만 같고 <strong>서로 다른 변수</strong>다. (함수 안의 것이 바깥 것을 가린다)</p>
+
         <!-- ============================================================ -->
         <h2>11. 객체 (추가)</h2>
         <div class="demo-js">
@@ -466,6 +490,44 @@ try {
             "요소를 못 찾았다"는 뜻이다. <strong>id 오타</strong>이거나 <strong>script 위치가 요소보다 위</strong>인지 먼저 확인한다.
         </div>
 
+        <h3>12-5. JS 코드를 별도 파일로 분리 + DOMContentLoaded (12_3_1.html, 12_3_1.js)</h3>
+        <pre><code>&lt;!-- 12_3_1.html : HTML 은 뼈대만, JS 는 파일로 분리 --&gt;
+&lt;input/&gt;
+&lt;script src="12_3_1.js"&gt;&lt;/script&gt;      &lt;!-- src 로 연결. 닫는 태그가 반드시 필요 (&lt;script src="..."/&gt; 는 안 됨) --&gt;</code></pre>
+        <pre><code>// 12_3_1.js : HTML 이 다 만들어진 뒤에 실행해 달라고 등록
+document.addEventListener("DOMContentLoaded", function (e) {
+    let button = document.querySelector("input")
+    button.addEventListener("input", function (e) {
+        console.log(e.target.value)
+    })
+})</code></pre>
+        <p><strong>script가 요소보다 먼저 실행되어 "없는 태그를 참조"하는 문제</strong>(12-4)를 해결하는 방법은 크게 네 가지다. (12_3_1.html 하단 주석의 정리)</p>
+        <table>
+            <tr><th>방법</th><th>설명</th></tr>
+            <tr><td>1. script를 <strong>끝에</strong> 둔다</td><td>대상 요소가 모두 만들어진 뒤라서 안전. 가장 단순하고 흔한 방법. (12_3_1.html이 이 방식)</td></tr>
+            <tr><td>2. <strong>인라인 이벤트 모델</strong>만 쓴다</td><td>함수는 <strong>정의만</strong> 해 두고, 호출은 아래쪽 HTML 태그의 <code>onclick="함수()"</code>가 한다. 함수가 미리 있어도 문제없고, 요소를 찾는 코드를 <strong>즉시 실행하지 않기 때문</strong>이다. (13-1, 13-6)</td></tr>
+            <tr><td>3. <strong>DOMContentLoaded</strong> 이벤트를 쓴다</td><td>script가 위(head)에 있어도, 문서가 다 만들어진 뒤에 실행할 코드를 등록해 둘 수 있다.</td></tr>
+            <tr><td>4. <code>defer</code> 속성</td><td><code>&lt;script src="..." defer&gt;</code> (12-4). HTML을 다 읽은 뒤 실행해 달라는 표시.</td></tr>
+        </table>
+        <table>
+            <tr><th>이벤트</th><th>발생하는 때</th></tr>
+            <tr><td><code>DOMContentLoaded</code></td><td>HTML 문서가 <strong>모두 로드되고 파싱이 완료된 시점</strong> = 문서의 뼈대(<strong>DOM</strong>, Document Object Model)가 다 만들어진 때. 이미지 등은 아직 로딩 중일 수 있음</td></tr>
+            <tr><td><code>load</code> (<code>window</code>)</td><td>이미지 등 <strong>모든 리소스까지</strong> 다 불러온 뒤. DOMContentLoaded보다 늦다</td></tr>
+        </table>
+        <div class="like-box">
+            <div>이 페이지에서 실제로 측정한 시각 (페이지가 열린 뒤 몇 ms 만에 발생했는지)</div>
+            <div class="ev-out" id="dclOut">대기 중...</div>
+            <div class="ev-out" id="loadOut">대기 중...</div>
+        </div>
+        <p class="tip">DOMContentLoaded가 먼저, load가 나중에 발생하는 것을 볼 수 있다. 위 코드는 이 페이지 맨 끝의 script에서 <code>document.addEventListener("DOMContentLoaded", ...)</code>와 <code>window.addEventListener("load", ...)</code>로 등록한 것이다.</p>
+        <div class="note">
+            <strong>12_3_1.js 에서 배울 점 : 같은 요소에 핸들러를 두 번 등록하면 두 번 실행된다</strong><br/>
+            12_3_1.js는 <strong>① 파일 위쪽에서 바로 등록</strong>하고 <strong>② DOMContentLoaded 안에서 한 번 더 등록</strong>하는 두 가지 방식을 모두 적어 둔 파일이다.
+            <code>&lt;input/&gt;</code>이 script보다 위에 있으면 ①이 성공하므로 둘 다 등록되어, <strong>글자 하나를 칠 때 <code>console.log</code>가 2번</strong> 찍힌다.
+            (13-2의 <code>onclick</code> 대입은 덮어쓰기라 하나만 남지만, <code>addEventListener</code>는 <strong>계속 추가</strong>된다)
+            두 방식은 "비교용"이고, 실제로는 <strong>하나만</strong> 선택한다. 보통 ①(script를 끝에 둠)이나 ②(DOMContentLoaded) 중 하나.
+        </div>
+
         <!-- ============================================================ -->
         <h2>13. 이벤트 핸들러 : 사용자와 상호작용</h2>
         <p>
@@ -502,6 +564,10 @@ try {
             <span id="sayHiOut"></span>
         </div>
         <p class="tip"><code>this</code> = 이벤트가 일어난 <strong>그 요소 자신</strong>이다. 간단하지만 HTML과 JS가 뒤섞여서 커지면 관리가 어렵다. (옛 코드, AI가 만든 짧은 예제에서 자주 보임)</p>
+        <p class="tip">
+            <strong>인라인 이벤트 모델의 평가</strong> (12_1_3.html 의 정리) : <strong>가성비가 좋다.</strong> 코드가 짧고 빠르게 만들 수 있다.
+            하지만 <strong>HTML이 정보의 뼈대만이 아니라 "기능"까지 포함하게 된다</strong> (HTML=구조, JS=동작으로 나누는 원칙이 무너짐). 그래서 작은 연습이나 테스트에는 좋지만, 커지는 프로젝트에서는 표준 이벤트 모델(<code>addEventListener</code>)로 분리한다.
+        </p>
 
         <h3>13-2. 방법 2 : JS에서 요소의 속성에 대입 (요소.onclick = 함수)</h3>
         <pre><code>const btnProp = document.getElementById("btnProp")
@@ -662,6 +728,69 @@ console.log(box.style.cssText)                 // CSS 로 변환된 모습 : 하
             <div class="out"></div>
         </div>
 
+        <h3>13-7. 인라인 모델에서 이벤트 객체 넘기기 : mouseover / mouseleave (13_1_4.html)</h3>
+        <pre><code>&lt;!-- 13_1_4.html : onMouseover="red(event)" 처럼 event 를 인자로 넘긴다 --&gt;
+&lt;script src="13_1_4.js"&gt;&lt;/script&gt;
+&lt;button onMouseover="red(event)" onMouseleave="blue(event)"&gt;HERE!&lt;/button&gt;
+
+// 13_1_4.js
+function red(e) {
+    e.target.style.backgroundColor = "red"       // e.target = 이벤트가 일어난 요소(그 버튼)
+}
+function blue(e) {
+    e.target.style.backgroundColor = "blue"
+}</code></pre>
+        <div class="like-box">
+            <button onmouseover="red(event)" onmouseleave="blue(event)">HERE!</button> ← 마우스를 올렸다 내려보세요
+        </div>
+        <table>
+            <tr><th>핵심</th><th>설명</th></tr>
+            <tr><td><code>event</code> 키워드</td><td>HTML 속성 안에서는 <code>event</code>라는 이름으로 <strong>이벤트 객체를 바로 쓸 수 있다.</strong> 이것을 함수에 넘기면 함수가 <code>e</code>로 받는다. (<code>addEventListener</code>에서는 자동으로 첫 인자로 들어옴)</td></tr>
+            <tr><td><code>e.target</code></td><td>이벤트가 일어난 <strong>요소</strong>. 함수 하나로 여러 버튼을 처리할 수 있다. (이벤트 객체 자체는 요소가 아니라 <strong>이벤트에 대한 정보 묶음</strong>이고, 그 안의 <code>target</code>이 요소다)</td></tr>
+            <tr><td><code>mouseover</code> / <code>mouseleave</code></td><td>마우스가 올라왔을 때 / 요소를 벗어났을 때</td></tr>
+        </table>
+        <p class="tip"><code>mouseout</code>과 <code>mouseleave</code>는 비슷하지만, <code>mouseout</code>은 <strong>요소 안의 자식 요소로 이동할 때도</strong> 발생하고 <code>mouseleave</code>는 <strong>요소 전체를 완전히 벗어날 때만</strong> 발생한다. 자식이 있는 상자에서는 <code>mouseleave</code>가 더 직관적이다.</p>
+
+        <h3>13-8. keydown / change / input 비교 (13_1_1.html, 13_3_1.js)</h3>
+        <pre><code>document.addEventListener("DOMContentLoaded", function (e) {
+    let keydown = document.querySelector("#keydown")
+    keydown.addEventListener("keydown", function (e) {
+        console.log(e.key)
+        if (e.key === "q") {            // 누른 키가 q 인지 검사
+            alert("this is q")
+        }
+    })
+    let change = document.querySelector("#change")
+    change.addEventListener("change", function (e) { console.log(e.target.value) })
+
+    let input = document.querySelector("#input")
+    input.addEventListener("input", function (e) { console.log(e.target.value) })
+})</code></pre>
+        <div class="like-box ev-grid">
+            <div>
+                <input id="kdInput" type="text" placeholder="keydown : 여기서 q 를 눌러보세요"/>
+                <div class="ev-out" id="kdOut">-</div>
+            </div>
+            <div>
+                <input id="chInput" type="text" placeholder="change : 글자를 치고 Enter 나 바깥 클릭"/>
+                <div class="ev-out" id="chOut">-</div>
+            </div>
+            <div>
+                <input id="inInput" type="text" placeholder="input : 글자를 쳐보세요"/>
+                <div class="ev-out" id="inOut">-</div>
+            </div>
+        </div>
+        <table>
+            <tr><th>이벤트</th><th>발생하는 때</th><th>"abc"를 입력하면</th></tr>
+            <tr><td><code>keydown</code></td><td><strong>키를 누르는 순간</strong>. 어떤 키인지는 <code>e.key</code></td><td>누른 키마다 (a, b, c ... 방향키, Shift 도 포함)</td></tr>
+            <tr><td><code>input</code></td><td>입력창의 <strong>내용이 바뀔 때마다</strong></td><td>3번 (a, ab, abc)</td></tr>
+            <tr><td><code>change</code></td><td>내용을 바꾼 뒤 <strong>확정</strong>될 때 (Enter 또는 입력창을 벗어날 때)</td><td><strong>1번</strong> (확정할 때)</td></tr>
+        </table>
+        <p class="tip">
+            <strong>e.key 비교는 대소문자를 구분</strong>한다. <code>e.key === "q"</code>는 소문자 q일 때만 참이고, Shift나 CapsLock을 켠 <code>"Q"</code>는 거짓이다.
+            둘 다 잡으려면 <code>e.key.toLowerCase() === "q"</code>로 쓴다. 키의 물리적 위치로 구분하려면 <code>e.code</code>(<code>"KeyQ"</code>)를 쓸 수 있다.
+        </p>
+
         <div class="note">
             <strong>자주 하는 실수</strong><br/>
             1. <code>btn.addEventListener("click", sayHi<strong>()</strong>)</code> : <strong>괄호를 붙이면 지금 바로 호출</strong>되고, 그 결과가 핸들러로 등록되어 버린다. 함수 <strong>자체</strong>를 넘겨야 한다 : <code>addEventListener("click", sayHi)</code><br/>
@@ -681,6 +810,7 @@ console.log(box.style.cssText)                 // CSS 로 변환된 모습 : 하
         </p>
 
         <h3>14-1. HTML 요소 찾기 : getElementById 와 querySelector (12_1_3, 12_2_5)</h3>
+        <p class="tip"><code>document</code> 객체 = <strong>현재 HTML 문서 전체를 나타내는 객체</strong>다. "문서를 제어하기 위한 것"으로, 요소를 찾고 바꾸는 모든 작업이 <code>document.</code>에서 시작한다. (12_1_3.html 의 주석)</p>
         <p>
             <code>document.querySelector("선택자")</code>는 <span class="key">CSS 선택자(3번, 26번)를 그대로</span> 써서 요소를 찾는다.
             <code>getElementById</code>보다 훨씬 다양하게 찾을 수 있어서 요즘 가장 많이 쓴다.
@@ -933,6 +1063,40 @@ console.log(typeof (a + b))</textarea>
             function resetDemo() {
                 document.querySelector("input[type='button'][value='click1']").style.backgroundColor = ""
             }
+
+            // ===== 12-5 : DOMContentLoaded 와 load 가 발생한 시각 측정 =====
+            document.addEventListener("DOMContentLoaded", function (e) {
+                document.getElementById("dclOut").textContent =
+                    "DOMContentLoaded 발생 : 페이지가 열리고 " + Math.round(performance.now()) + "ms 후 (HTML 뼈대 완성)"
+            })
+            window.addEventListener("load", function (e) {
+                document.getElementById("loadOut").textContent =
+                    "load 발생 : 페이지가 열리고 " + Math.round(performance.now()) + "ms 후 (이미지 등 전부 로드 완료)"
+            })
+
+            // ===== 13-7 : 13_1_4.js — 인라인 이벤트 모델에서 event 를 넘겨받는 함수 =====
+            function red(e) {
+                e.target.style.backgroundColor = "red"
+            }
+            function blue(e) {
+                e.target.style.backgroundColor = "blue"
+            }
+
+            // ===== 13-8 : keydown / change / input 비교 (콘솔 대신 화면에 표시) =====
+            let changeCount = 0
+            let inputCount = 0
+            document.getElementById("kdInput").addEventListener("keydown", function (e) {
+                document.getElementById("kdOut").textContent =
+                    "e.key = " + e.key + (e.key === "q" ? "  ← q 를 눌렀어요! (this is q)" : "")
+            })
+            document.getElementById("chInput").addEventListener("change", function (e) {
+                changeCount++
+                document.getElementById("chOut").textContent = "change " + changeCount + "번째 : " + e.target.value
+            })
+            document.getElementById("inInput").addEventListener("input", function (e) {
+                inputCount++
+                document.getElementById("inOut").textContent = "input " + inputCount + "번째 : " + e.target.value
+            })
 
             // ===== 14-2 : 12_2_5.html — querySelector + addEventListener =====
             const demoBtn = document.querySelector("input[type='button'][value='버튼']")
