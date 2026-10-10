@@ -160,7 +160,7 @@ th { background-color: #f5f5f5; }
 
 /* ===== 모바일 대응 (화면 너비 600px 이하) : 가로 스크롤 없이 화면 너비에 맞춰 줄바꿈 ===== */
 @media (max-width: 600px) {
-    body { font-size: 15px; overflow-wrap: break-word; }
+    body { font-size: 15px; overflow-wrap: break-word; word-break: keep-all; }   /* keep-all : 한글을 글자 중간이 아니라 띄어쓰기 단위로 줄바꿈 */
     h1 { font-size: 24px; }
     h2 { font-size: 19px; margin-top: 36px; }
     h3 { font-size: 16px; }
@@ -169,17 +169,22 @@ th { background-color: #f5f5f5; }
     pre { font-size: 12.5px; white-space: break-spaces; overflow-wrap: anywhere; overflow-x: visible;   /* break-spaces : 연속 공백도 줄바꿈 대상이 되어 옆으로 안 삐져나감 */ }
     code { overflow-wrap: anywhere; }
 
-    /* 표 : 화면 너비에 맞춰 줄이고 글자를 줄바꿈 */
+    /* 표 : 2칸 표는 화면 너비에 맞춰 줄이고, 3칸 이상 표는 행마다 "카드"로 쌓아서 보여줌 (가로 스크롤 없이)
+       table.stack 과 data-label 은 js/mobile_table.js 가 붙여 준다 */
     table { width: 100%; font-size: 13px; }
     th, td { padding: 4px 6px; overflow-wrap: anywhere; }
-
-    /* 4칸 이상인 표는 행마다 세로로 쌓아서 보여줌 (한 줄에 넣으면 칸이 너무 좁아지므로) */
-    table:has(tr > :nth-child(4)),
-    table:has(tr > :nth-child(4)) tbody { display: block; }
-    tr:has(> :nth-child(4)) { display: block; border: 1px solid #ccc; margin-bottom: 8px; }
-    tr:has(> :nth-child(4)) > td,
-    tr:has(> :nth-child(4)) > th { display: block; border: none; border-bottom: 1px solid #eee; }
-    tr:has(> th:nth-child(4)) { display: none; }       /* 제목 행은 숨김 (각 줄이 이미 설명을 담고 있음) */
+    table.stack, table.stack tbody { display: block; width: 100%; }
+    table.stack tr.hdr { display: none; }                 /* 제목 행은 각 칸의 라벨로 대신함 */
+    table.stack tr { display: block; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 8px; overflow: hidden; background-color: #fff; }
+    table.stack td { display: block; border: none; border-bottom: 1px solid #eee; padding: 5px 10px; }
+    table.stack td:last-child { border-bottom: none; }
+    /* 라벨은 칸 내용 바로 앞에 한 줄로 붙임 (칸마다 줄을 따로 쓰지 않아서 카드가 짧아짐) */
+    table.stack td::before { content: attr(data-label); display: inline-block; margin-right: 8px; font-size: 11px; font-weight: bold; color: #888; }
+    table.stack td:not([data-label])::before { display: none; }
+    table.stack td:has(pre)::before { display: block; margin: 0 0 3px; }           /* 코드 상자가 든 칸은 라벨을 위에 따로 */
+    table.stack td pre { margin: 4px 0; }
+    table.stack td:first-child { background-color: #f7f7f7; font-weight: bold; }
+    table.stack td:first-child::before { display: none; }                         /* 첫 칸은 카드의 제목 역할 */
 }
 @media (max-width: 600px) {
     .demo-js .bar { flex-wrap: wrap; gap: 4px; }
