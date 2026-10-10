@@ -616,6 +616,7 @@ btnAdd.addEventListener("click", () =&gt; {         // 핸들러 B : 화살표 �
             <tr><td><code>submit</code></td><td>form을 제출할 때</td><td>제출 막기</td></tr>
             <tr><td><code>DOMContentLoaded</code> / <code>load</code></td><td>HTML(또는 모든 리소스)이 다 로드됐을 때</td><td>-</td></tr>
         </table>
+        <p class="tip">📱 <strong>모바일(터치 화면)로 볼 때</strong> : 마우스가 없어서 <code>mouseover</code>/<code>mouseleave</code>(13-4, 13-7)와 키보드가 필요한 <code>keydown</code>(13-8) 실습은 동작이 PC와 다르거나 확인하기 어렵다. 이 실습들은 <strong>PC에서 확인</strong>하는 것을 권한다. (터치용 이벤트는 따로 <code>touchstart</code> 등이 있다)</p>
         <pre><code>// mouseover / mouseout : 마우스를 올렸다 뗐다
 hoverBox.addEventListener("mouseover", () =&gt; { hoverBox.style.backgroundColor = "gold" })
 hoverBox.addEventListener("mouseout",  () =&gt; { hoverBox.style.backgroundColor = "" })

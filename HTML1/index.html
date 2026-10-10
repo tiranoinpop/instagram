@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <!-- 대문 페이지 : 공부 노트들로 이동하는 링크 모음 -->
+<!-- 새 노트를 추가하는 방법 :
+     1. 아래 알맞은 section 안에 <a class="card" href="파일명.html"> ... </a> 블록 하나를 복사해서 붙이고 제목 / 설명 / 상태만 바꾼다.
+     2. 새 분류가 필요하면 <section> 블록(제목 h2 + div.cards)을 통째로 복사한다.
+     카드는 화면 너비에 맞춰 자동으로 줄바꿈된다 (모바일 1열 / 태블릿 2열 / PC 3열 이상). 개수가 늘어나도 그대로 동작한다. -->
 <html lang="ko">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>프론트엔드 공부방</title>
+        <title>인수의 개발 공부방</title>
         <style>
             body {
-                max-width: 860px;
+                max-width: 960px;
                 margin-left: auto;
                 margin-right: auto;
                 padding: 0 16px 40px;
@@ -18,16 +22,28 @@
             h1 {
                 border-bottom: 3px solid #222;
             }
+            h2.group {
+                margin: 32px 0 12px;
+                font-size: 18px;
+                color: #444;
+            }
+
+            /* 카드 목록 : 칸 너비가 최소 260px 이상 확보되는 만큼만 열을 만든다.
+               min(100%, 260px) 덕분에 화면이 260px 보다 좁아도 넘치지 않고,
+               모든 칸이 같은 너비(1fr)라서 한쪽만 커지거나 찌그러지지 않는다. */
             .cards {
                 display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
+                grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+                gap: 12px;
             }
             .card {
-                display: block;
+                display: flex;
+                flex-direction: column;
+                min-width: 0;                    /* 긴 글자 때문에 칸이 늘어나지 않게 */
+                overflow-wrap: anywhere;
                 border: 1px solid #ccc;
                 border-radius: 10px;
-                padding: 18px;
+                padding: 16px;
                 text-decoration: none;
                 color: inherit;
             }
@@ -35,10 +51,17 @@
                 border-color: #3a6ff7;
                 background-color: #f4f7ff;
             }
-            .card h2 {
-                margin-top: 0;
+            .card h3 {
+                margin: 0 0 6px;
+                font-size: 18px;
+            }
+            .card p {
+                margin: 0 0 10px;
+                font-size: 14px;
+                color: #444;
             }
             .status {
+                margin-top: auto;                /* 설명 길이가 달라도 상태 표시는 항상 카드 맨 아래 */
                 font-size: 13px;
                 color: #666;
             }
@@ -46,36 +69,57 @@
                 border-style: dashed;
                 color: #999;
             }
+            footer {
+                margin-top: 32px;
+                font-size: 14px;
+            }
+
+            @media (max-width: 600px) {
+                h1 { font-size: 24px; }
+                .card { padding: 14px; }
+                .card h3 { font-size: 17px; }
+            }
         </style>
     </head>
     <body>
         <header>
-            <h1>프론트엔드 공부방</h1>
-            <p>HTML, CSS, JavaScript 를 공부하며 정리하는 노트 모음. 끝까지 가보자.</p>
+            <h1>인수의 개발 공부방</h1>
+            <p>공부하면서 정리한 노트 모음</p>
         </header>
 
         <main>
-            <section class="cards">
-                <a class="card" href="./HTML_study.html">
-                    <h2>HTML 공부 노트</h2>
-                    <p>태그 정리 : 문서 구조, 텍스트, 링크, 이미지, input, 시맨틱 태그, 목록, 표, 폼</p>
-                    <span class="status">정리 완료 (다음 : 복습)</span>
-                </a>
-                <a class="card" href="./CSS_study.html">
-                    <h2>CSS 공부 노트</h2>
-                    <p>색상, 선택자, 우선순위, 단위, 박스 모델, 배경, display / visibility, grid, 미디어 쿼리(반응형)까지 + 교재 밖 보충(flexbox, 변수, position, F12 등)</p>
-                    <span class="status">교재 학습 완료 (보충 정리 중)</span>
-                </a>
-                <a class="card" href="./javascript_study.html">
-                    <h2>JavaScript 공부 노트</h2>
-                    <p>콘솔, 타입, 문자열, 변수, 조건문, script 태그, 이벤트 모델, querySelector, DOMContentLoaded (코드를 직접 실행해 볼 수 있음)</p>
-                    <span class="status">공부 중</span>
-                </a>
-                <a class="card" href="./html_css_study_sample.html">
-                    <h2>인스타그램 프로필 클론</h2>
-                    <p>HTML + CSS 종합 실습 결과물 (vw 단위로 창 크기에 맞춰 변함)</p>
-                    <span class="status">시맨틱 태그 + vw 적용</span>
-                </a>
+            <!-- ===== 분류 1 : 웹 프론트엔드 ===== -->
+            <section>
+                <h2 class="group">🌐 웹 프론트엔드</h2>
+                <div class="cards">
+                    <a class="card" href="./HTML_study.html">
+                        <h3>HTML 공부 노트</h3>
+                        <p>태그 정리 : 문서 구조, 텍스트, 링크, 이미지, input, 시맨틱 태그, 목록, 표, 폼</p>
+                        <span class="status">정리 완료 (다음 : 복습)</span>
+                    </a>
+                    <a class="card" href="./CSS_study.html">
+                        <h3>CSS 공부 노트</h3>
+                        <p>색상, 선택자, 우선순위, 단위, 박스 모델, grid, 미디어 쿼리(반응형) + 보충(flexbox, 변수, position 등)</p>
+                        <span class="status">교재 학습 완료 (보충 정리 중)</span>
+                    </a>
+                    <a class="card" href="./javascript_study.html">
+                        <h3>JavaScript 공부 노트</h3>
+                        <p>콘솔, 타입, 문자열, 변수, 조건문, script 태그, 이벤트 모델, querySelector (코드를 직접 실행해 볼 수 있음)</p>
+                        <span class="status">공부 중</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- ===== 분류 2 : 실습 결과물 ===== -->
+            <section>
+                <h2 class="group">🛠 실습 결과물</h2>
+                <div class="cards">
+                    <a class="card" href="./html_css_study_sample.html">
+                        <h3>인스타그램 프로필 클론</h3>
+                        <p>HTML + CSS 종합 실습 (vw 단위로 창 크기에 맞춰 변함)</p>
+                        <span class="status">시맨틱 태그 + vw 적용</span>
+                    </a>
+                </div>
             </section>
         </main>
 

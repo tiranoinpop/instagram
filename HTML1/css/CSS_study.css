@@ -269,3 +269,32 @@ th { background-color: #f5f5f5; }
 .demo22 .box { display: inline-block; width: 60px; height: 40px; background-color: #ffd8a8; text-align: center; line-height: 40px; }
 .demo22 .hidden { visibility: hidden; }
 .demo22 .gone { display: none; }
+
+/* ===== 모바일 대응 (화면 너비 600px 이하) : 가로 스크롤 없이 화면 너비에 맞춰 줄바꿈 ===== */
+@media (max-width: 600px) {
+    body { font-size: 15px; overflow-wrap: break-word; }
+    h1 { font-size: 24px; }
+    h2 { font-size: 19px; margin-top: 36px; }
+    h3 { font-size: 16px; }
+
+    /* 코드 : 가로 스크롤 대신 줄바꿈 */
+    pre { font-size: 12.5px; white-space: break-spaces; overflow-wrap: anywhere; overflow-x: visible;   /* break-spaces : 연속 공백도 줄바꿈 대상이 되어 옆으로 안 삐져나감 */ }
+    code { overflow-wrap: anywhere; }
+
+    /* 표 : 화면 너비에 맞춰 줄이고 글자를 줄바꿈 */
+    table { width: 100%; font-size: 13px; }
+    th, td { padding: 4px 6px; overflow-wrap: anywhere; }
+
+    /* 4칸 이상인 표는 행마다 세로로 쌓아서 보여줌 (한 줄에 넣으면 칸이 너무 좁아지므로) */
+    table:has(tr > :nth-child(4)),
+    table:has(tr > :nth-child(4)) tbody { display: block; }
+    tr:has(> :nth-child(4)) { display: block; border: 1px solid #ccc; margin-bottom: 8px; }
+    tr:has(> :nth-child(4)) > td,
+    tr:has(> :nth-child(4)) > th { display: block; border: none; border-bottom: 1px solid #eee; }
+    tr:has(> th:nth-child(4)) { display: none; }       /* 제목 행은 숨김 (각 줄이 이미 설명을 담고 있음) */
+}
+@media (max-width: 600px) {
+    .result { overflow-x: visible; }
+    .sw { width: 60px; }
+    .demo20 .parent { max-width: 100%; }
+}
