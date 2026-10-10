@@ -7,6 +7,7 @@
         <title>JavaScript 공부 노트</title>
         <link href="./css/javascript_study.css" rel="stylesheet">
         <script src="./js/mobile_table.js" defer></script>
+        <script src="./js/mobile_code.js" defer></script>
     </head>
     <body>
         <p><a href="./index.html">← 대문으로</a> | <a href="./HTML_study.html">HTML 노트</a> | <a href="./CSS_study.html">CSS 노트</a></p>
@@ -969,7 +970,8 @@ console.log(typeof (a + b))</textarea>
                 const outEl = box.querySelector(".out")
                 const btn = box.querySelector(".run-btn")
                 if (!codeEl || !btn) return                       // 놀이터 상자는 아래에서 따로 처리
-                const run = function () { outEl.textContent = runCode(codeEl.textContent) }
+                const originalCode = codeEl.textContent                  // 처음 코드를 보관 (모바일에서 보이는 모양을 바꿔도 실행은 원본으로)
+                const run = function () { outEl.textContent = runCode(originalCode) }
                 btn.addEventListener("click", run)
                 run()                                             // 페이지를 열면 한 번 자동 실행
             })
