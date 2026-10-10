@@ -885,6 +885,98 @@ textInput.addEventListener("input", function (e) {
         </table>
         <p class="tip">HTML (구조) + CSS (모양) + JS (동작)이 합쳐지는 지점이다. 위 버튼의 색 변화는 <code>.liked</code> CSS 클래스를 JS가 붙여서 만든 것이다.</p>
 
+        <h3>14-4. 요소의 내용 바꾸기 : textContent 와 innerHTML</h3>
+        <table>
+            <tr><th>속성</th><th>넣은 값을 어떻게 취급하나</th><th>쓰는 때</th></tr>
+            <tr><td><code>textContent</code></td><td><strong>글자 그대로</strong> 넣는다. <code>&lt;b&gt;</code> 같은 태그도 그냥 글자로 보인다</td><td>단순히 글자만 바꿀 때 (대부분의 경우)</td></tr>
+            <tr><td><code>innerHTML</code></td><td><strong>HTML로 해석</strong>해서 넣는다. <code>&lt;b&gt;</code>가 진짜 굵은 글씨가 되고, <code>&lt;input&gt;</code>이 진짜 입력창이 된다</td><td>입력창, 링크, 굵은 글씨 같은 <strong>요소를 만들어 넣을 때</strong></td></tr>
+        </table>
+        <p>같은 값 <code>"&lt;b&gt;안녕&lt;/b&gt; &lt;i&gt;하세요&lt;/i&gt;"</code>를 두 방식으로 넣어 보면 차이가 보인다.</p>
+        <pre><code>box.textContent = "&lt;b&gt;안녕&lt;/b&gt; &lt;i&gt;하세요&lt;/i&gt;"     // 태그가 글자로 그대로 보임
+box.innerHTML   = "&lt;b&gt;안녕&lt;/b&gt; &lt;i&gt;하세요&lt;/i&gt;"     // 굵게 / 기울임이 실제로 적용됨</code></pre>
+        <div class="like-box">
+            <button id="btnText">textContent 로 넣기</button>
+            <button id="btnHtml">innerHTML 로 넣기</button>
+            <div class="ev-out" id="innerDemoBox">-</div>
+        </div>
+        <div class="demo-js">
+            <div class="bar"><span>JavaScript (화면에 붙이지 않은 연습용 요소로 확인)</span><button class="run-btn">▶ 다시 실행</button></div>
+            <pre><code>const box = document.createElement("div")        // 연습용 요소 (화면에는 안 붙임)
+
+box.textContent = "&lt;b&gt;굵게&lt;/b&gt;"
+console.log(box.innerHTML)             // 태그 기호가 글자로 바뀌어 저장됨 (&amp;lt; = 글자 &lt;)
+console.log(box.children.length)       // 0 : 자식 요소가 없다 (그냥 글자)
+
+box.innerHTML = "&lt;b&gt;굵게&lt;/b&gt;"
+console.log(box.children.length)       // 1 : 진짜 &lt;b&gt; 요소가 생겼다
+console.log(box.textContent)           // 굵게 : 태그를 뺀 글자만 읽힘
+console.log(box.innerHTML)             // &lt;b&gt;굵게&lt;/b&gt; : 태그까지 포함해서 읽힘</code></pre>
+            <div class="out"></div>
+        </div>
+        <ul>
+            <li><strong>읽을 때도 차이</strong>가 있다. <code>textContent</code>는 태그를 뺀 <strong>글자만</strong>, <code>innerHTML</code>은 <strong>태그까지 포함한 HTML 문자열</strong>을 돌려준다.</li>
+            <li><code>innerHTML</code>에 넣는 값은 <strong>그냥 문자열</strong>이다. 그래서 <code>"&lt;input type='text' value='" + 글자 + "'/&gt;"</code>처럼 문자열을 이어 붙여서 HTML을 만든다.</li>
+            <li>(참고) 기존 내용을 지우고 새로 만드는 것이라, 안에 있던 요소들에 등록해 둔 이벤트 핸들러는 사라진다. 특히 <code>el.innerHTML += "..."</code>는 안의 전부를 다시 만들기 때문에 주의한다.</li>
+        </ul>
+
+        <h3>14-5. innerHTML 을 쓸 때 조심할 점</h3>
+        <div class="demo-js">
+            <div class="bar"><span>JavaScript</span><button class="run-btn">▶ 다시 실행</button></div>
+            <pre><code>const text = "it's me"                            // 작은따옴표(') 가 들어간 글자
+
+// 방법 1 : 문자열을 이어 붙여서 HTML 을 만든다 (innerHTML)
+const box1 = document.createElement("div")
+box1.innerHTML = "&lt;input type='text' value='" + text + "'/&gt;"
+console.log(box1.querySelector("input").value)    // it   ← 글자 안의 ' 에서 value 가 끊겨 버렸다!
+
+// 방법 2 : 요소를 만들고 value 에 값을 대입한다 (createElement)
+const box2 = document.createElement("div")
+const input = document.createElement("input")
+input.value = text
+box2.appendChild(input)
+console.log(box2.querySelector("input").value)    // it's me   ← 안전하게 그대로</code></pre>
+            <div class="out"></div>
+        </div>
+        <table>
+            <tr><th>문제</th><th>이유</th><th>대응</th></tr>
+            <tr><td>값에 <code>'</code> 나 <code>"</code> 가 있으면 깨짐</td><td>문자열을 이어 붙인 HTML 안에서 따옴표가 속성의 끝으로 해석됨</td><td><code>createElement</code> 로 요소를 만들고 <code>.value</code> 로 값을 넣는다</td></tr>
+            <tr><td><strong>보안 문제 (XSS)</strong></td><td>사용자가 입력한 글자를 <code>innerHTML</code>에 그대로 넣으면, 입력한 내용이 <strong>HTML(태그, 이벤트 속성)로 실행</strong>될 수 있음</td><td>사용자가 입력한 값은 <code>textContent</code> 로 넣는다. <code>innerHTML</code> 은 내가 직접 쓴 고정된 HTML에만 쓴다</td></tr>
+        </table>
+        <p class="tip">연습용 코드에서는 괜찮지만, <strong>"내가 쓴 글자 → innerHTML"은 OK / "사용자가 입력한 글자 → innerHTML"은 위험</strong>이라고 기억해 둔다. (실제 서비스에서 가장 흔한 보안 사고 중 하나)</p>
+
+        <h3>14-6. 응용 : 상태 변수로 버튼 하나에 두 가지 기능 (javascript_sample.js)</h3>
+        <p>
+            버튼은 하나인데 <strong>"수정 시작"</strong>과 <strong>"저장"</strong>이라는 두 일을 시키고 싶을 때, <span class="key">지금 어떤 상태인지 기억하는 변수</span>(<code>changing</code>, 참 / 거짓)를 둔다.
+            누를 때마다 <code>if</code>로 상태를 보고 할 일을 고르고, 끝나면 상태를 뒤집는다.
+        </p>
+        <pre><code>let changing = false                          // 평소 상태 (수정 중 아님)
+
+editBtn.addEventListener("click", function (e) {
+    if (changing) {
+        // ── 저장 : 입력창의 값을 읽어서 글자로 확정 ──
+        nameEl.textContent = nameEl.querySelector("input").value     // input.value = 입력창에 적힌 글자
+        e.target.textContent = "프로필편집"
+        changing = false
+    } else {
+        // ── 수정 시작 : 현재 글자를 입력창으로 교체 ──
+        nameEl.innerHTML = "&lt;input type='text' value='" + nameEl.textContent + "'/&gt;"
+        e.target.textContent = "저장"
+        changing = true
+    }
+})</code></pre>
+        <div class="like-box">
+            <p style="margin-top: 0;">이름 : <strong id="pfName">김인수</strong> / 소개 : <span id="pfBio">소프트웨어 엔지니어</span></p>
+            <button id="pfBtn">프로필편집</button> ← 눌러서 입력창으로 바꾸고, 글자를 고친 뒤 "저장"을 눌러 보세요
+        </div>
+        <div class="note">
+            <strong>이 코드에서 쓴 것들 (정리)</strong><br/>
+            · <code>input.value</code> : 입력창에 지금 적힌 글자 (항상 문자열)<br/>
+            · <code>e.target</code> : 이벤트가 일어난 요소 = 눌린 버튼 자신<br/>
+            · <code>startsWith("http://")</code> : 글자가 그 문자로 시작하는지 검사 (4번). 주소처럼 보이면 <code>&lt;a href&gt;</code> 링크로 만들 때 사용<br/>
+            · <code>_userinfo</code> 처럼 <code>_</code> 가 앞에 붙은 이름은 "임시 변수"라는 관례적 표시일 뿐, 문법과는 상관없다<br/>
+            · <strong>HTML의 id 오타</strong> 한 글자(<code>id=""profileDetail"</code>)만 있어도 <code>querySelector</code>가 <code>null</code>을 돌려줘서 전체가 멈춘다 (12-4). 에러가 나면 id 와 선택자부터 확인한다.
+        </div>
+
         <!-- ============================================================ -->
         <h2>15. C / C++ 에서 온 사람을 위한 비교 정리</h2>
         <table>
@@ -1110,6 +1202,35 @@ console.log(typeof (a + b))</textarea>
             const demoText = document.querySelector("input[type='text'][placeholder='텍스트를 입력하세요']")
             demoText.addEventListener("input", function (e) {
                 document.getElementById("demo125Out").textContent = e.target.value      // 원본은 console.log(e.target.value)
+            })
+
+            // ===== 14-4 : textContent 와 innerHTML 비교 =====
+            const innerDemoBox = document.getElementById("innerDemoBox")
+            const sampleHtml = "<b>안녕</b> <i>하세요</i>"
+            document.getElementById("btnText").addEventListener("click", function () {
+                innerDemoBox.textContent = sampleHtml          // 태그가 글자 그대로
+            })
+            document.getElementById("btnHtml").addEventListener("click", function () {
+                innerDemoBox.innerHTML = sampleHtml            // 태그가 실제로 적용
+            })
+
+            // ===== 14-6 : 프로필 편집 (javascript_sample.js 와 같은 구조) =====
+            let pfEditing = false
+            const pfBtn = document.getElementById("pfBtn")
+            const pfName = document.getElementById("pfName")
+            const pfBio = document.getElementById("pfBio")
+            pfBtn.addEventListener("click", function (e) {
+                if (pfEditing) {
+                    pfName.textContent = pfName.querySelector("input").value
+                    pfBio.textContent = pfBio.querySelector("input").value
+                    e.target.textContent = "프로필편집"
+                    pfEditing = false
+                } else {
+                    pfName.innerHTML = "<input type='text' value='" + pfName.textContent + "'/>"
+                    pfBio.innerHTML = "<input type='text' value='" + pfBio.textContent + "'/>"
+                    e.target.textContent = "저장"
+                    pfEditing = true
+                }
             })
         </script>
     </body>
